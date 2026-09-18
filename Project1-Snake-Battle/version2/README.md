@@ -1,5 +1,7 @@
 # 🐍 Snake Fruit Frenzy (Version 2)
 
+🌐 **Live Demo:** [https://ai-prompting-in-2026-projects-z5z2.vercel.app/](https://ai-prompting-in-2026-projects-z5z2.vercel.app/)
+
 An enhanced, vibrant arcade snake game built with HTML5 Canvas, responsive CSS, and Web Audio API synthesized sound effects.
 
 ## 🌟 Highlights & Features

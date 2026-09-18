@@ -41,6 +41,7 @@ Each version is completely self-contained with **zero external dependencies**. Y
    - File: [`version1/index.html`](version1/index.html)
    - Docs: [`version1/README.md`](version1/README.md)
 2. **Version 2 (Snake Fruit Frenzy):**
+   - 🌐 **Live Demo:** [https://ai-prompting-in-2026-projects-z5z2.vercel.app/](https://ai-prompting-in-2026-projects-z5z2.vercel.app/)
    - File: [`version2/index.html`](version2/index.html)
    - Docs: [`version2/README.md`](version2/README.md)
 3. **Version 3 (Agentic Step-by-Step Curriculum):**
