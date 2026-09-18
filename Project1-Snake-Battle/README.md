@@ -37,6 +37,7 @@ Through 3 distinct versions, we explored different architectures, combat mechani
 Each version is completely self-contained with **zero external dependencies**. You can run any version simply by opening its `index.html` file in any modern web browser:
 
 1. **Version 1 (Tactical Battle Realms):**
+   - 🌐 **Live Demo:** [https://ai-prompting-in-2026-projects.vercel.app/](https://ai-prompting-in-2026-projects.vercel.app/)
    - File: [`version1/index.html`](version1/index.html)
    - Docs: [`version1/README.md`](version1/README.md)
 2. **Version 2 (Snake Fruit Frenzy):**

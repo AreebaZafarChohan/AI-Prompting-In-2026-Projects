@@ -1,5 +1,7 @@
 # Snake Battle — Agentic Coding Experiment
 
+🌐 **Live Demo:** [https://ai-prompting-in-2026-projects.vercel.app/](https://ai-prompting-in-2026-projects.vercel.app/)
+
 ## 1. Project Overview
 
 **Snake Battle** is a modern, client-side HTML5 canvas arcade game built using vanilla JavaScript, HTML, and CSS. The player commands a dynamic snake in competitive grid arenas called **Realms**, navigating obstacles, collecting power-ups and fruits, and engaging in tactical head-to-head combat with autonomous, AI-driven rival snakes.
