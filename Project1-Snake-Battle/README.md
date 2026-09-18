@@ -45,6 +45,7 @@ Each version is completely self-contained with **zero external dependencies**. Y
    - File: [`version2/index.html`](version2/index.html)
    - Docs: [`version2/README.md`](version2/README.md)
 3. **Version 3 (Agentic Step-by-Step Curriculum):**
+   - 🌐 **Live Demo:** [https://ai-prompting-in-2026-projects-cgzu.vercel.app/](https://ai-prompting-in-2026-projects-cgzu.vercel.app/)
    - File: [`version3/index.html`](version3/index.html)
    - Docs: [`version3/README.md`](version3/README.md)
 

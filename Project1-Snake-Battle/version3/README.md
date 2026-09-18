@@ -1,5 +1,7 @@
 # Snake Game — Version 3
 
+🌐 **Live Demo:** [https://ai-prompting-in-2026-projects-cgzu.vercel.app/](https://ai-prompting-in-2026-projects-cgzu.vercel.app/)
+
 ## 1. Project Overview
 
 This project is a browser-based snake game built through an interactive, AI-assisted game-building exercise as part of the Agent Factory / agentic coding curriculum.
@@ -223,10 +225,9 @@ score, and do it.
 
 The game is delivered as a standalone, zero-dependency web application:
 - **File:** `index.html`
+- **Live URL:** [https://ai-prompting-in-2026-projects-cgzu.vercel.app/](https://ai-prompting-in-2026-projects-cgzu.vercel.app/)
 
-It runs in any modern web browser by opening the file directly.
-
-*(Note: No external hosting URL was configured or recorded in this session).*
+It runs in any modern web browser by opening the file directly or visiting the deployed link.
 
 ---
 
