@@ -1,0 +1,2345 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake Battle: Cosmic Arena</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: rgba(22, 27, 34, 0.92);
+      --accent: #58a6ff;
+      --accent-glow: rgba(88, 166, 255, 0.45);
+      --text: #c9d1d9;
+      --border: #30363d;
+      --gold: #ffd700;
+      --danger: #ff7b72;
+      --success: #7ee787;
+      --purple: #bc8cff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #161b22 0%, #080b10 100%);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 10px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 22px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 35px var(--accent-glow);
+      backdrop-filter: blur(16px);
+      max-width: 660px;
+      width: 100%;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .title {
+      font-size: 23px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #58a6ff 0%, #7ee787 45%, #ffa657 80%, #bc8cff 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .realm-badge, .diff-badge, .rank-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scoreboard {
+      display: flex;
+      gap: 6px;
+    }
+
+    .score-box {
+      background: rgba(13, 17, 23, 0.85);
+      padding: 5px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 58px;
+    }
+
+    .score-label {
+      font-size: 9px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    .score-val {
+      font-size: 16px;
+      color: #f0f6fc;
+      font-weight: 800;
+      font-feature-settings: "tnum";
+    }
+
+    .icon-btn {
+      background: rgba(13, 17, 23, 0.85);
+      border: 1px solid var(--border);
+      color: #c9d1d9;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 19px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .icon-btn:hover {
+      background: #21262d;
+      color: #58a6ff;
+      border-color: #58a6ff;
+      transform: rotate(30deg) scale(1.06);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    /* Live Battle HUD */
+    .battle-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      background: rgba(13, 17, 23, 0.65);
+      border: 1px solid rgba(48, 54, 61, 0.6);
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 12px;
+      gap: 10px;
+    }
+
+    .live-leaderboard {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .leader-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(22, 27, 34, 0.9);
+      border: 1px solid var(--border);
+    }
+
+    .leader-tag.player {
+      border-color: #58a6ff;
+      box-shadow: 0 0 6px rgba(88, 166, 255, 0.3);
+    }
+
+    .hud-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      min-height: 26px;
+      padding: 0 2px;
+      font-size: 12px;
+    }
+
+    .active-buffs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .buff-tag {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(22, 27, 34, 0.95);
+      border: 1px solid;
+      border-radius: 20px;
+      padding: 2px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      animation: pulseBuff 1.2s infinite ease-in-out;
+    }
+
+    @keyframes pulseBuff {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .combo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+      transition: opacity 0.2s;
+    }
+
+    .combo-pill {
+      font-weight: 800;
+      font-size: 12px;
+      color: var(--gold);
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+    }
+
+    .combo-meter {
+      width: 65px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .combo-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ffa657, #ffd700);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* Canvas Area */
+    .canvas-wrapper {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid #30363d;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.95), 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    canvas {
+      display: block;
+      background-color: #080b10;
+    }
+
+    /* Overlays */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 14, 20, 0.94);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+    }
+
+    .overlay h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #f0f6fc;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .overlay p {
+      color: #8b949e;
+      font-size: 13px;
+      max-width: 440px;
+      line-height: 1.4;
+    }
+
+    /* Setting Groups */
+    .settings-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 4px 8px;
+    }
+
+    .settings-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .settings-scroll::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .setting-label {
+      font-size: 11px;
+      color: #8b949e;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .color-options, .speed-options, .realm-options, .diff-options {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .color-option {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .color-option:hover {
+      transform: scale(1.18);
+    }
+
+    .color-option.selected {
+      border-color: #ffffff;
+      transform: scale(1.25);
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+    }
+
+    .option-btn {
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #8b949e;
+      background: rgba(13, 17, 23, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .option-btn:hover {
+      color: #f0f6fc;
+      border-color: #58a6ff;
+    }
+
+    .option-btn.selected {
+      background: rgba(88, 166, 255, 0.25);
+      color: #58a6ff;
+      border-color: #58a6ff;
+      box-shadow: 0 0 10px rgba(88, 166, 255, 0.35);
+    }
+
+    .btn {
+      padding: 11px 32px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #0d1117;
+      background: linear-gradient(135deg, #7ee787, #58a6ff);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(126, 231, 135, 0.4);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(126, 231, 135, 0.6);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Legend and Combat Rules */
+    .legend-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+      background: rgba(13, 17, 23, 0.6);
+      border: 1px solid rgba(48, 54, 61, 0.6);
+      border-radius: 12px;
+      padding: 7px 12px;
+    }
+
+    .legend-row {
+      display: flex;
+      justify-content: space-around;
+      font-size: 11px;
+      color: #8b949e;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .controls-hint {
+      font-size: 11.5px;
+      color: #6e7681;
+      text-align: center;
+    }
+
+    .kbd {
+      display: inline-block;
+      padding: 2px 5px;
+      font-size: 10.5px;
+      font-family: monospace;
+      color: #c9d1d9;
+      background-color: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      box-shadow: inset 0 -1px 0 #30363d;
+    }
+
+    /* Stat grid at gameover */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 420px;
+      background: rgba(13, 17, 23, 0.8);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .stat-card-title {
+      font-size: 10px;
+      color: #8b949e;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .stat-card-val {
+      font-size: 17px;
+      font-weight: 800;
+      color: #f0f6fc;
+    }
+
+    .combat-guide {
+      font-size: 11.5px;
+      background: rgba(88, 166, 255, 0.08);
+      border: 1px solid rgba(88, 166, 255, 0.25);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #c9d1d9;
+      text-align: left;
+      line-height: 1.5;
+    }
+    .combat-guide span {
+      font-weight: 700;
+      color: #58a6ff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="title-group">
+      <div class="title"><span>🐍</span> SNAKE BATTLE ARENA</div>
+      <div class="badge-row">
+        <div id="realmBadge" class="realm-badge" style="background: rgba(126, 231, 135, 0.15); color: #7ee787; border: 1px solid #7ee787;">
+          🌲 Forest Realm (Lvl 1)
+        </div>
+        <div id="diffBadge" class="diff-badge" style="background: rgba(88, 166, 255, 0.15); color: #58a6ff; border: 1px solid #58a6ff;">
+          ⚙️ Medium
+        </div>
+        <div id="rankBadge" class="rank-badge" style="background: rgba(255, 215, 0, 0.15); color: #ffd700; border: 1px solid #ffd700;">
+          👑 Rank #1
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="scoreboard">
+        <div class="score-box">
+          <span class="score-label">Score</span>
+          <span class="score-val" id="score">0</span>
+        </div>
+        <div class="score-box">
+          <span class="score-label">Best</span>
+          <span class="score-val" id="highScore">0</span>
+        </div>
+        <div class="score-box">
+          <span class="score-label">Kills</span>
+          <span class="score-val" id="killsVal" style="color:#ff7b72;">0</span>
+        </div>
+        <div class="score-box">
+          <span class="score-label">Length</span>
+          <span class="score-val" id="length">4</span>
+        </div>
+      </div>
+      <button class="icon-btn" id="settingsBtn" title="Battle Settings (AI, Color, Speed)">⚙️</button>
+    </div>
+  </div>
+
+  <!-- Live Arena Leaderboard Bar -->
+  <div class="battle-hud">
+    <span style="font-weight: 700; font-size: 11px; color: #8b949e; text-transform: uppercase;">Arena Snakes:</span>
+    <div class="live-leaderboard" id="leaderboardBar"></div>
+  </div>
+
+  <!-- HUD with Buffs & Combo -->
+  <div class="hud-bar">
+    <div class="active-buffs" id="activeBuffs"></div>
+    <div class="combo-wrapper" id="comboWrapper" style="opacity: 0;">
+      <span class="combo-pill" id="comboPill">COMBO x2!</span>
+      <div class="combo-meter">
+        <div class="combo-fill" id="comboFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas-wrapper">
+    <canvas id="gameCanvas" width="540" height="540"></canvas>
+
+    <!-- Main Menu Overlay -->
+    <div id="startOverlay" class="overlay">
+      <h2>Cosmic Snake Battle</h2>
+      <p>Outmaneuver intelligent AI snakes, collect food to grow, cut off rivals to absorb their energy orbs, and conquer dynamic realm hazards!</p>
+
+      <div class="combat-guide">
+        ⚔️ <b>Battle Tactics:</b><br/>
+        • <b>Cut Off Rivals:</b> Make enemies crash into your body to eliminate them for massive energy food & bounty!<br/>
+        • <b>Head-on Collisions:</b> Larger snakes crush smaller ones; equal lengths rebound.<br/>
+        • <b>Personalities:</b> Aggressive hunters intercept, Collectors steal food, Titans guard the arena!
+      </div>
+
+      <div class="settings-scroll">
+        <div class="setting-group">
+          <span class="setting-label">AI Battle Difficulty</span>
+          <div class="diff-options" id="diffPickerStart"></div>
+        </div>
+
+        <div class="setting-group">
+          <span class="setting-label">Player Skin</span>
+          <div class="color-options" id="colorPickerStart"></div>
+        </div>
+
+        <div class="setting-group">
+          <span class="setting-label">Movement Speed</span>
+          <div class="speed-options" id="speedPickerStart"></div>
+        </div>
+
+        <div class="setting-group">
+          <span class="setting-label">Starting Realm</span>
+          <div class="realm-options" id="realmPickerStart"></div>
+        </div>
+      </div>
+
+      <button class="btn" id="startBtn">ENTER BATTLE</button>
+    </div>
+
+    <!-- Reusable Settings Overlay -->
+    <div id="settingsOverlay" class="overlay hidden" style="z-index: 50;">
+      <h2>Battle Settings</h2>
+      <p>Configure gameplay difficulty, snake visuals, and game pace:</p>
+
+      <div class="settings-scroll">
+        <div class="setting-group">
+          <span class="setting-label">AI Battle Difficulty</span>
+          <div class="diff-options" id="diffPickerSettings"></div>
+        </div>
+
+        <div class="setting-group">
+          <span class="setting-label">Player Snake Skin</span>
+          <div class="color-options" id="colorPickerSettings"></div>
+        </div>
+
+        <div class="setting-group">
+          <span class="setting-label">Movement Speed</span>
+          <div class="speed-options" id="speedPickerSettings"></div>
+        </div>
+
+        <div class="setting-group" id="settingsRealmGroup">
+          <span class="setting-label">Current / Starting Realm</span>
+          <div class="realm-options" id="realmPickerSettings"></div>
+        </div>
+      </div>
+
+      <button class="btn" id="closeSettingsBtn">BACK / APPLY</button>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div id="gameOverOverlay" class="overlay hidden">
+      <h2 id="gameOverTitle" style="color: #ff7b72;">Battle Defeat!</h2>
+      <p id="gameOverDesc" style="color: #c9d1d9; font-size: 13px;">A rival snake intercepted your trajectory.</p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-card-title">Final Score</span>
+          <span class="stat-card-val" id="statScore" style="color: #58a6ff;">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-title">Enemies Slain</span>
+          <span class="stat-card-val" id="statKills" style="color: #ff7b72;">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-title">Final Rank</span>
+          <span class="stat-card-val" id="statRank" style="color: #ffd700;">#1</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-title">Max Length</span>
+          <span class="stat-card-val" id="statLength" style="color: #7ee787;">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-title">Max Combo</span>
+          <span class="stat-card-val" id="statCombo" style="color: #ffd700;">x1</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-card-title">Highest Realm</span>
+          <span class="stat-card-val" id="statRealm" style="color: #bc8cff;">Forest</span>
+        </div>
+      </div>
+      <button class="btn" id="restartBtn">RE-ENTER BATTLE</button>
+    </div>
+  </div>
+
+  <!-- Legend Panel -->
+  <div class="legend-panel">
+    <div class="legend-row">
+      <div class="legend-item"><span style="color:#ff5555">🍎</span> Apple (+10)</div>
+      <div class="legend-item"><span style="color:#ffa657">🍊</span> Orange (+25)</div>
+      <div class="legend-item"><span style="color:#bc8cff">🍇</span> Grape (+50)</div>
+      <div class="legend-item"><span style="color:#ffd700">⭐</span> Star (+100)</div>
+      <div class="legend-item"><span style="color:#ff3399">💎</span> Dragon (+250)</div>
+      <div class="legend-item"><span style="color:#00ffcc">🔮</span> Essence (+40)</div>
+    </div>
+    <div class="legend-row">
+      <div class="legend-item">🛡️ Shield</div>
+      <div class="legend-item">⚡ Boost</div>
+      <div class="legend-item">❄️ Freeze AI</div>
+      <div class="legend-item">✖️2 2x Score</div>
+      <div class="legend-item">🧲 Magnet</div>
+      <div class="legend-item" style="color: #ff7b72;">💀 Cut-off AI for Energy Drops!</div>
+    </div>
+  </div>
+
+  <div class="controls-hint">
+    Steer: <span class="kbd">W</span><span class="kbd">A</span><span class="kbd">S</span><span class="kbd">D</span> or <span class="kbd">↑</span><span class="kbd">←</span><span class="kbd">↓</span><span class="kbd">→</span> • Pause: <span class="kbd">Space</span> • Settings: <span class="kbd">⚙️</span>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // DOM Elements
+  const scoreEl = document.getElementById('score');
+  const highScoreEl = document.getElementById('highScore');
+  const killsValEl = document.getElementById('killsVal');
+  const lengthEl = document.getElementById('length');
+  const realmBadgeEl = document.getElementById('realmBadge');
+  const diffBadgeEl = document.getElementById('diffBadge');
+  const rankBadgeEl = document.getElementById('rankBadge');
+  const leaderboardBar = document.getElementById('leaderboardBar');
+  const activeBuffsEl = document.getElementById('activeBuffs');
+  const comboWrapper = document.getElementById('comboWrapper');
+  const comboPill = document.getElementById('comboPill');
+  const comboFill = document.getElementById('comboFill');
+
+  const startOverlay = document.getElementById('startOverlay');
+  const settingsOverlay = document.getElementById('settingsOverlay');
+  const gameOverOverlay = document.getElementById('gameOverOverlay');
+  const gameOverTitle = document.getElementById('gameOverTitle');
+  const gameOverDesc = document.getElementById('gameOverDesc');
+  const startBtn = document.getElementById('startBtn');
+  const restartBtn = document.getElementById('restartBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+  const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+
+  const statScore = document.getElementById('statScore');
+  const statKills = document.getElementById('statKills');
+  const statRank = document.getElementById('statRank');
+  const statLength = document.getElementById('statLength');
+  const statCombo = document.getElementById('statCombo');
+  const statRealm = document.getElementById('statRealm');
+
+  const colorPickerStart = document.getElementById('colorPickerStart');
+  const colorPickerSettings = document.getElementById('colorPickerSettings');
+  const speedPickerStart = document.getElementById('speedPickerStart');
+  const speedPickerSettings = document.getElementById('speedPickerSettings');
+  const realmPickerStart = document.getElementById('realmPickerStart');
+  const realmPickerSettings = document.getElementById('realmPickerSettings');
+  const diffPickerStart = document.getElementById('diffPickerStart');
+  const diffPickerSettings = document.getElementById('diffPickerSettings');
+
+  // Constants
+  const GRID_SIZE = 20;
+  const TILE_COUNT = Math.floor(canvas.width / GRID_SIZE); // 27 tiles
+
+  // Player Skins
+  const SNAKE_SKINS = [
+    { name: 'Emerald', head: '#7ee787', glow: 'rgba(126, 231, 135, 0.7)', bodyR: 40, bodyG: 180, bodyB: 100 },
+    { name: 'Cyber Blue', head: '#58a6ff', glow: 'rgba(88, 166, 255, 0.7)', bodyR: 30, bodyG: 110, bodyB: 220 },
+    { name: 'Neon Purple', head: '#bc8cff', glow: 'rgba(188, 140, 255, 0.7)', bodyR: 140, bodyG: 60, bodyB: 200 },
+    { name: 'Blaze Orange', head: '#ffa657', glow: 'rgba(255, 166, 87, 0.7)', bodyR: 220, bodyG: 110, bodyB: 40 },
+    { name: 'Ruby Pink', head: '#ff7b72', glow: 'rgba(255, 123, 114, 0.7)', bodyR: 210, bodyG: 50, bodyB: 80 },
+    { name: 'Solar Gold', head: '#ffd700', glow: 'rgba(255, 215, 0, 0.8)', bodyR: 210, bodyG: 170, bodyB: 20 },
+    { name: 'Frost Cyan', head: '#39c5bb', glow: 'rgba(57, 197, 187, 0.8)', bodyR: 20, bodyG: 160, bodyB: 170 }
+  ];
+
+  // Configurable Speeds
+  const SPEED_LEVELS = [
+    { name: 'Very Slow', baseMs: 170 },
+    { name: 'Slow', baseMs: 135 },
+    { name: 'Normal', baseMs: 105 },
+    { name: 'Fast', baseMs: 80 },
+    { name: 'Very Fast', baseMs: 60 },
+    { name: 'Insane', baseMs: 44 }
+  ];
+
+  // Difficulty Settings
+  const DIFFICULTY_LEVELS = [
+    {
+      id: 'easy',
+      name: 'Easy',
+      color: '#7ee787',
+      enemyCount: 2,
+      aiSmartness: 0.45,
+      allowAggressive: false,
+      hazardMultiplier: 0.6,
+      desc: 'Fewer enemies, relaxed AI, forgiving arena'
+    },
+    {
+      id: 'medium',
+      name: 'Medium',
+      color: '#58a6ff',
+      enemyCount: 3,
+      aiSmartness: 0.72,
+      allowAggressive: true,
+      hazardMultiplier: 1.0,
+      desc: 'Balanced enemy types, smart food gathering'
+    },
+    {
+      id: 'hard',
+      name: 'Hard',
+      color: '#ffa657',
+      enemyCount: 4,
+      aiSmartness: 0.90,
+      allowAggressive: true,
+      hazardMultiplier: 1.4,
+      desc: 'Aggressive hunters, active cut-off maneuvers'
+    },
+    {
+      id: 'extreme',
+      name: 'Extreme',
+      color: '#ff7b72',
+      enemyCount: 5,
+      aiSmartness: 0.98,
+      allowAggressive: true,
+      hazardMultiplier: 1.8,
+      desc: 'Apex hunters, Arena Titans, dynamic realm hazards'
+    }
+  ];
+
+  // Enemy Personalities & Types
+  const ENEMY_TYPES = [
+    {
+      type: 'basic',
+      name: 'Crawler',
+      headColor: '#38d9a9',
+      glowColor: 'rgba(56, 217, 169, 0.8)',
+      bodyR: 30, bodyG: 160, bodyB: 130,
+      initialLength: 4,
+      speedRate: 1, // moves every tick
+      bounty: 150,
+      icon: '🟢',
+      behavior: 'food'
+    },
+    {
+      type: 'collector',
+      name: 'Harvester',
+      headColor: '#fcc419',
+      glowColor: 'rgba(252, 196, 25, 0.8)',
+      bodyR: 200, bodyG: 150, bodyB: 20,
+      initialLength: 5,
+      speedRate: 1,
+      bounty: 200,
+      icon: '🟡',
+      behavior: 'collector'
+    },
+    {
+      type: 'fast',
+      name: 'Viper Dart',
+      headColor: '#ff6b6b',
+      glowColor: 'rgba(255, 107, 107, 0.8)',
+      bodyR: 220, bodyG: 60, bodyB: 60,
+      initialLength: 3,
+      speedRate: 1.2,
+      bounty: 250,
+      icon: '🔴',
+      behavior: 'agile'
+    },
+    {
+      type: 'aggressive',
+      name: 'Shadow Hunter',
+      headColor: '#cc5de8',
+      glowColor: 'rgba(204, 93, 232, 0.9)',
+      bodyR: 140, bodyG: 40, bodyB: 180,
+      initialLength: 5,
+      speedRate: 1,
+      bounty: 300,
+      icon: '🟣',
+      behavior: 'hunter'
+    },
+    {
+      type: 'boss',
+      name: 'Goliath Titan',
+      headColor: '#ff922b',
+      glowColor: 'rgba(255, 146, 43, 0.95)',
+      bodyR: 230, bodyG: 100, bodyB: 20,
+      initialLength: 9,
+      speedRate: 0.8,
+      bounty: 600,
+      icon: '👑',
+      behavior: 'boss'
+    }
+  ];
+
+  // Realms / Environments with distinct dynamic hazards & obstacles
+  const REALMS = [
+    {
+      id: 'forest',
+      name: 'Forest Realm',
+      level: 1,
+      minScore: 0,
+      bg: '#07130b',
+      gridColor: 'rgba(126, 231, 135, 0.04)',
+      accent: '#7ee787',
+      obstacleColor: '#2ea043',
+      obstacleGlow: 'rgba(46, 160, 67, 0.6)',
+      obstacleCount: 5,
+      icon: '🌲',
+      hazardName: 'Ancient Briars',
+      hazardDesc: 'Overgrown briar clusters block paths'
+    },
+    {
+      id: 'desert',
+      name: 'Desert Realm',
+      level: 2,
+      minScore: 250,
+      bg: '#140e06',
+      gridColor: 'rgba(255, 166, 87, 0.05)',
+      accent: '#ffa657',
+      obstacleColor: '#d29922',
+      obstacleGlow: 'rgba(210, 153, 34, 0.6)',
+      obstacleCount: 8,
+      icon: '🏜️',
+      hazardName: 'Quicksand Sinkholes',
+      hazardDesc: 'Rock formations & sand dunes restrict movement'
+    },
+    {
+      id: 'ocean',
+      name: 'Ocean Realm',
+      level: 3,
+      minScore: 600,
+      bg: '#041018',
+      gridColor: 'rgba(88, 166, 255, 0.05)',
+      accent: '#58a6ff',
+      obstacleColor: '#1f6feb',
+      obstacleGlow: 'rgba(31, 111, 235, 0.6)',
+      obstacleCount: 11,
+      icon: '🌊',
+      hazardName: 'Vortex Currents',
+      hazardDesc: 'Coral reefs & current whirlpools drift objects'
+    },
+    {
+      id: 'space',
+      name: 'Space Realm',
+      level: 4,
+      minScore: 1100,
+      bg: '#0c0617',
+      gridColor: 'rgba(188, 140, 255, 0.06)',
+      accent: '#bc8cff',
+      obstacleColor: '#8957e5',
+      obstacleGlow: 'rgba(137, 87, 229, 0.7)',
+      obstacleCount: 14,
+      icon: '🌌',
+      hazardName: 'Plasma Asteroids',
+      hazardDesc: 'Pulsing electrified asteroids and dark matter'
+    }
+  ];
+
+  // Fruits
+  const FRUITS_CONFIG = [
+    { type: 'apple', color: '#ff4d4d', glow: 'rgba(255, 77, 77, 0.7)', points: 10, grow: 1, weight: 50, icon: '🍎' },
+    { type: 'orange', color: '#ff944d', glow: 'rgba(255, 148, 77, 0.7)', points: 25, grow: 1, weight: 25, icon: '🍊' },
+    { type: 'grape', color: '#b84dff', glow: 'rgba(184, 77, 255, 0.7)', points: 50, grow: 2, weight: 14, icon: '🍇' },
+    { type: 'star', color: '#ffd700', glow: 'rgba(255, 215, 0, 0.8)', points: 100, grow: 3, weight: 8, icon: '⭐' },
+    { type: 'dragon', color: '#ff3399', glow: 'rgba(255, 51, 153, 0.9)', points: 250, grow: 4, weight: 3, icon: '💎', isRare: true },
+    { type: 'essence', color: '#00ffcc', glow: 'rgba(0, 255, 204, 0.95)', points: 40, grow: 1, weight: 0, icon: '🔮', isEssence: true }
+  ];
+
+  // Power-up Types
+  const POWERUP_TYPES = [
+    { type: 'shield', icon: '🛡️', name: 'Shield', color: '#58a6ff', duration: 0, desc: 'Immunity to 1 fatal hit/collision' },
+    { type: 'speed', icon: '⚡', name: 'Boost', color: '#ffa657', duration: 6000, desc: 'Speed boost + 1.5x score' },
+    { type: 'slow', icon: '❄️', name: 'Freeze AI', color: '#79c0ff', duration: 6000, desc: 'Freezes/Slows all AI enemies' },
+    { type: 'double', icon: '✖️2', name: '2x Score', color: '#ffd700', duration: 8000, desc: 'Double points on everything' },
+    { type: 'magnet', icon: '🧲', name: 'Magnet', color: '#ff7b72', duration: 7000, desc: 'Pulls nearby fruits & essence' }
+  ];
+
+  // Persistent selections
+  let selectedSkin = SNAKE_SKINS[0];
+  let selectedSpeed = SPEED_LEVELS[1]; // Slow by default
+  let selectedStartRealm = REALMS[0];
+  let selectedDifficulty = DIFFICULTY_LEVELS[1]; // Medium by default
+
+  // Game state
+  let snake = [];
+  let velocity = { x: 0, y: 0 };
+  let nextVelocity = { x: 0, y: 0 };
+  let enemySnakes = [];
+  let fruits = [];
+  let powerups = [];
+  let obstacles = [];
+  let environmentalHazards = []; // Hazard zones (currents / anomalies)
+  let particles = [];
+  let floatingTexts = [];
+
+  let score = 0;
+  let enemiesKilled = 0;
+
+  function getSavedHighScore() {
+    try {
+      return parseInt(localStorage.getItem('snake_battle_highscore') || '0', 10) || 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  function setSavedHighScore(val) {
+    try {
+      localStorage.setItem('snake_battle_highscore', val);
+    } catch {}
+  }
+
+  let highScore = getSavedHighScore();
+  highScoreEl.innerText = highScore;
+
+  let currentRealm = REALMS[0];
+  let gameRunning = false;
+  let isPaused = false;
+  let gameTimeout = null;
+
+  // Active buffs tracking
+  let activeShield = false;
+  let activeBuffs = {}; // { type: expireTimestamp }
+
+  // Combo & Survival Tracker
+  let comboCount = 0;
+  let maxComboAchieved = 1;
+  let lastFruitTime = 0;
+  const COMBO_TIMEOUT = 4200; // ms
+  let gameStartTime = 0;
+  let lastSurvivalRewardTime = 0;
+  let nextEnemySpawnTick = 0;
+
+  // AI ID counter
+  let enemyIdCounter = 1;
+
+  // UI Renderers for Pickers
+  function renderDifficultyPickers() {
+    [diffPickerStart, diffPickerSettings].forEach(container => {
+      if (!container) return;
+      container.innerHTML = '';
+      DIFFICULTY_LEVELS.forEach(diff => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn' + (diff.id === selectedDifficulty.id ? ' selected' : '');
+        btn.innerText = diff.name;
+        btn.type = 'button';
+        btn.title = diff.desc;
+        btn.addEventListener('click', () => {
+          selectedDifficulty = diff;
+          updateDiffBadge();
+          renderDifficultyPickers();
+        });
+        container.appendChild(btn);
+      });
+    });
+  }
+
+  function renderColorPickers() {
+    [colorPickerStart, colorPickerSettings].forEach(container => {
+      if (!container) return;
+      container.innerHTML = '';
+      SNAKE_SKINS.forEach(skin => {
+        const dot = document.createElement('div');
+        dot.className = 'color-option' + (skin === selectedSkin ? ' selected' : '');
+        dot.style.background = skin.head;
+        dot.title = skin.name;
+        dot.addEventListener('click', () => {
+          selectedSkin = skin;
+          renderColorPickers();
+        });
+        container.appendChild(dot);
+      });
+    });
+  }
+
+  function renderSpeedPickers() {
+    [speedPickerStart, speedPickerSettings].forEach(container => {
+      if (!container) return;
+      container.innerHTML = '';
+      SPEED_LEVELS.forEach(speed => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn' + (speed.name === selectedSpeed.name ? ' selected' : '');
+        btn.innerText = speed.name;
+        btn.type = 'button';
+        btn.addEventListener('click', () => {
+          selectedSpeed = speed;
+          renderSpeedPickers();
+        });
+        container.appendChild(btn);
+      });
+    });
+  }
+
+  function renderRealmPickers() {
+    [realmPickerStart, realmPickerSettings].forEach(container => {
+      if (!container) return;
+      container.innerHTML = '';
+      REALMS.forEach(realm => {
+        const btn = document.createElement('button');
+        const isCurrent = gameRunning ? (realm.id === currentRealm.id) : (realm.id === selectedStartRealm.id);
+        btn.className = 'option-btn' + (isCurrent ? ' selected' : '');
+        btn.innerHTML = `${realm.icon} ${realm.name.split(' ')[0]}`;
+        btn.type = 'button';
+        btn.addEventListener('click', () => {
+          selectedStartRealm = realm;
+          if (gameRunning) {
+            currentRealm = realm;
+            updateRealmBadge();
+            generateObstacles(currentRealm);
+            addFloatingText(`✨ REALM: ${realm.name.toUpperCase()}`, snake[0].x, snake[0].y, realm.accent);
+          }
+          renderRealmPickers();
+        });
+        container.appendChild(btn);
+      });
+    });
+  }
+
+  function updateDiffBadge() {
+    diffBadgeEl.innerText = `⚙️ ${selectedDifficulty.name}`;
+    diffBadgeEl.style.color = selectedDifficulty.color;
+    diffBadgeEl.style.borderColor = selectedDifficulty.color;
+    diffBadgeEl.style.backgroundColor = selectedDifficulty.color + '22';
+  }
+
+  function updateRealmBadge() {
+    realmBadgeEl.innerText = `${currentRealm.icon} ${currentRealm.name} (Lvl ${currentRealm.level})`;
+    realmBadgeEl.style.color = currentRealm.accent;
+    realmBadgeEl.style.borderColor = currentRealm.accent;
+    realmBadgeEl.style.backgroundColor = currentRealm.accent + '22';
+  }
+
+  renderDifficultyPickers();
+  renderColorPickers();
+  renderSpeedPickers();
+  renderRealmPickers();
+  updateDiffBadge();
+
+  // Settings Modal Controls
+  let openedFromStartMenu = false;
+
+  function openSettings() {
+    openedFromStartMenu = !startOverlay.classList.contains('hidden');
+    if (gameRunning) {
+      isPaused = true;
+    }
+    renderDifficultyPickers();
+    renderColorPickers();
+    renderSpeedPickers();
+    renderRealmPickers();
+    settingsOverlay.classList.remove('hidden');
+  }
+
+  function closeSettings() {
+    settingsOverlay.classList.add('hidden');
+    if (openedFromStartMenu) {
+      startOverlay.classList.remove('hidden');
+    } else if (gameRunning) {
+      isPaused = false;
+      scheduleNextTick();
+    }
+  }
+
+  settingsBtn.addEventListener('click', openSettings);
+  closeSettingsBtn.addEventListener('click', closeSettings);
+
+  // Speed calculation with power-ups & difficulty
+  function getCurrentTickMs() {
+    let base = selectedSpeed.baseMs;
+
+    // Difficulty scaling slightly increases speed with snake size/score
+    const difficultyStep = Math.min(22, Math.floor(score / 90) * 2);
+    base = Math.max(32, base - difficultyStep);
+
+    // Speed power-up / Slow power-up
+    const now = Date.now();
+    if (activeBuffs.speed && activeBuffs.speed > now) {
+      base = Math.max(26, Math.floor(base * 0.65));
+    }
+
+    return base;
+  }
+
+  // Generate realm obstacles and arena dynamic hazards
+  function generateObstacles(realm) {
+    obstacles = [];
+    environmentalHazards = [];
+
+    const obstacleTarget = Math.round(realm.obstacleCount * selectedDifficulty.hazardMultiplier);
+    let attempts = 0;
+
+    // Generate solid obstacles (rocks, trees, asteroid clusters)
+    while (obstacles.length < obstacleTarget && attempts < 400) {
+      attempts++;
+      const ox = Math.floor(Math.random() * (TILE_COUNT - 4)) + 2;
+      const oy = Math.floor(Math.random() * (TILE_COUNT - 4)) + 2;
+
+      // Safe zone around center start (13, 13)
+      if (Math.abs(ox - Math.floor(TILE_COUNT / 2)) < 3 && Math.abs(oy - Math.floor(TILE_COUNT / 2)) < 3) continue;
+      if (obstacles.some(o => o.x === ox && o.y === oy)) continue;
+
+      obstacles.push({
+        x: ox,
+        y: oy,
+        type: realm.id,
+        pulse: Math.random() * Math.PI
+      });
+    }
+
+    // Generate special realm hazards
+    if (realm.id === 'ocean') {
+      // 2 Whirlpool Current Zones that drift items
+      environmentalHazards.push({
+        x: 6, y: 6, width: 3, height: 3, type: 'current', dirX: 1, dirY: 0, label: '🌊 Drift Current'
+      });
+      environmentalHazards.push({
+        x: 18, y: 18, width: 3, height: 3, type: 'current', dirX: -1, dirY: 0, label: '🌊 Drift Current'
+      });
+    } else if (realm.id === 'space') {
+      // Pulsar Nebula hazard zone
+      environmentalHazards.push({
+        x: 12, y: 4, width: 4, height: 3, type: 'anomaly', label: '⚡ Nebula Field'
+      });
+      environmentalHazards.push({
+        x: 12, y: 20, width: 4, height: 3, type: 'anomaly', label: '⚡ Nebula Field'
+      });
+    }
+  }
+
+  // Spawn AI Enemy Snakes
+  function createEnemySnake(specificType = null) {
+    let typeConfig;
+    if (specificType) {
+      typeConfig = specificType;
+    } else {
+      // Pick based on difficulty & random
+      const pool = [ENEMY_TYPES[0], ENEMY_TYPES[1]]; // Basic, Collector
+      if (selectedDifficulty.allowAggressive) {
+        pool.push(ENEMY_TYPES[2]); // Fast
+        pool.push(ENEMY_TYPES[3]); // Aggressive
+      }
+      if (selectedDifficulty.id === 'extreme' && Math.random() < 0.35 && !enemySnakes.some(e => e.type === 'boss')) {
+        typeConfig = ENEMY_TYPES[4]; // Goliath Titan
+      } else {
+        typeConfig = pool[Math.floor(Math.random() * pool.length)];
+      }
+    }
+
+    // Find a clear spawn location away from player head
+    let spawnX, spawnY;
+    let attempts = 0;
+    while (attempts < 200) {
+      attempts++;
+      spawnX = Math.floor(Math.random() * (TILE_COUNT - 6)) + 3;
+      spawnY = Math.floor(Math.random() * (TILE_COUNT - 6)) + 3;
+
+      const playerHead = snake[0] || { x: 13, y: 13 };
+      const distToPlayer = Math.hypot(spawnX - playerHead.x, spawnY - playerHead.y);
+
+      if (distToPlayer < 7) continue; // Keep initial distance from player
+      if (isCellOccupied(spawnX, spawnY)) continue;
+      break;
+    }
+
+    const startDir = [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }][Math.floor(Math.random() * 4)];
+    const body = [];
+    for (let i = 0; i < typeConfig.initialLength; i++) {
+      body.push({
+        x: Math.max(0, Math.min(TILE_COUNT - 1, spawnX - startDir.x * i)),
+        y: Math.max(0, Math.min(TILE_COUNT - 1, spawnY - startDir.y * i))
+      });
+    }
+
+    const enemy = {
+      id: enemyIdCounter++,
+      ...typeConfig,
+      name: `${typeConfig.name} #${enemyIdCounter}`,
+      body: body,
+      velocity: { ...startDir },
+      kills: 0,
+      score: 0,
+      moveAccumulator: 0,
+      targetFruit: null,
+      alive: true
+    };
+
+    return enemy;
+  }
+
+  function initGame() {
+    const centerTile = Math.floor(TILE_COUNT / 2);
+    snake = [
+      { x: centerTile, y: centerTile },
+      { x: centerTile, y: centerTile + 1 },
+      { x: centerTile, y: centerTile + 2 },
+      { x: centerTile, y: centerTile + 3 }
+    ];
+    velocity = { x: 0, y: -1 };
+    nextVelocity = { x: 0, y: -1 };
+    score = 0;
+    enemiesKilled = 0;
+    gameStartTime = Date.now();
+    lastSurvivalRewardTime = Date.now();
+
+    currentRealm = selectedStartRealm;
+    updateRealmBadge();
+    updateDiffBadge();
+    generateObstacles(currentRealm);
+
+    scoreEl.innerText = score;
+    killsValEl.innerText = enemiesKilled;
+    lengthEl.innerText = snake.length;
+
+    fruits = [];
+    powerups = [];
+    particles = [];
+    floatingTexts = [];
+    enemySnakes = [];
+    activeBuffs = {};
+    activeShield = false;
+    comboCount = 0;
+    maxComboAchieved = 1;
+    updateBuffsUI();
+
+    // Spawn AI Enemies matching difficulty count
+    const targetEnemies = selectedDifficulty.enemyCount;
+    for (let i = 0; i < targetEnemies; i++) {
+      enemySnakes.push(createEnemySnake());
+    }
+
+    // Spawn initial fruits & powerups
+    while (fruits.length < 3) spawnFruit();
+    if (Math.random() < 0.7) spawnPowerup();
+
+    updateLeaderboardHUD();
+
+    startOverlay.classList.add('hidden');
+    settingsOverlay.classList.add('hidden');
+    gameOverOverlay.classList.add('hidden');
+
+    gameRunning = true;
+    isPaused = false;
+
+    if (gameTimeout) clearTimeout(gameTimeout);
+    scheduleNextTick();
+    requestAnimationFrame(renderLoop);
+  }
+
+  function scheduleNextTick() {
+    if (!gameRunning || isPaused) return;
+    if (gameTimeout) clearTimeout(gameTimeout);
+    gameTimeout = setTimeout(() => {
+      gameTick();
+      scheduleNextTick();
+    }, getCurrentTickMs());
+  }
+
+  function getRandomFruitType() {
+    const totalWeight = FRUITS_CONFIG.reduce((sum, f) => sum + f.weight, 0);
+    let rand = Math.random() * totalWeight;
+    for (const fruit of FRUITS_CONFIG) {
+      if (rand < fruit.weight) return fruit;
+      rand -= fruit.weight;
+    }
+    return FRUITS_CONFIG[0];
+  }
+
+  function isCellOccupied(x, y, excludeSnake = null) {
+    if (snake.some(s => s.x === x && s.y === y)) return true;
+    if (obstacles.some(o => o.x === x && o.y === y)) return true;
+    if (fruits.some(f => f.x === x && f.y === y)) return true;
+    if (powerups.some(p => p.x === x && p.y === y)) return true;
+    for (const enemy of enemySnakes) {
+      if (enemy === excludeSnake || !enemy.alive) continue;
+      if (enemy.body.some(b => b.x === x && b.y === y)) return true;
+    }
+    return false;
+  }
+
+  function isCellObstacleOrWall(x, y) {
+    if (x < 0 || x >= TILE_COUNT || y < 0 || y >= TILE_COUNT) return true;
+    if (obstacles.some(o => o.x === x && o.y === y)) return true;
+    return false;
+  }
+
+  function spawnFruit(forcedType = null, x = null, y = null) {
+    let position;
+    if (x !== null && y !== null) {
+      position = { x, y };
+    } else {
+      let attempts = 0;
+      while (attempts < 150) {
+        position = {
+          x: Math.floor(Math.random() * TILE_COUNT),
+          y: Math.floor(Math.random() * TILE_COUNT)
+        };
+        if (!isCellOccupied(position.x, position.y)) break;
+        attempts++;
+      }
+    }
+
+    const typeConfig = forcedType || getRandomFruitType();
+    fruits.push({
+      ...position,
+      ...typeConfig,
+      pulse: Math.random() * Math.PI,
+      pulseSpeed: 0.05 + Math.random() * 0.04
+    });
+  }
+
+  function spawnPowerup() {
+    if (powerups.length >= 2) return;
+    let position;
+    let attempts = 0;
+    while (attempts < 150) {
+      position = {
+        x: Math.floor(Math.random() * TILE_COUNT),
+        y: Math.floor(Math.random() * TILE_COUNT)
+      };
+      if (!isCellOccupied(position.x, position.y)) break;
+      attempts++;
+    }
+
+    const config = POWERUP_TYPES[Math.floor(Math.random() * POWERUP_TYPES.length)];
+    powerups.push({
+      ...position,
+      ...config,
+      pulse: 0,
+      createdAt: Date.now(),
+      lifetime: 14000
+    });
+  }
+
+  function addFloatingText(text, x, y, color = '#ffffff') {
+    floatingTexts.push({
+      text,
+      x: (x + 0.5) * GRID_SIZE,
+      y: (y + 0.5) * GRID_SIZE,
+      color,
+      alpha: 1,
+      vy: -0.7
+    });
+  }
+
+  function createParticles(x, y, color, count = 16, speedMultiplier = 1) {
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = (1 + Math.random() * 4) * speedMultiplier;
+      particles.push({
+        x: (x + 0.5) * GRID_SIZE,
+        y: (y + 0.5) * GRID_SIZE,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        color: color,
+        alpha: 1,
+        size: 2.5 + Math.random() * 3,
+        decay: 0.025 + Math.random() * 0.03
+      });
+    }
+  }
+
+  function checkRealmProgression() {
+    const nextRealm = REALMS.slice().reverse().find(r => score >= r.minScore);
+    if (nextRealm && nextRealm.id !== currentRealm.id) {
+      currentRealm = nextRealm;
+      updateRealmBadge();
+      generateObstacles(currentRealm);
+      addFloatingText(`✨ REALM CONQUERED: ${currentRealm.name.toUpperCase()}!`, snake[0].x, snake[0].y, currentRealm.accent);
+      createParticles(snake[0].x, snake[0].y, currentRealm.accent, 45, 2.2);
+    }
+  }
+
+  function activatePowerup(p) {
+    const now = Date.now();
+    if (p.type === 'shield') {
+      activeShield = true;
+      addFloatingText('🛡️ SHIELD EQUIPPED!', p.x, p.y, p.color);
+    } else {
+      activeBuffs[p.type] = now + p.duration;
+      addFloatingText(`${p.icon} ${p.name.toUpperCase()}!`, p.x, p.y, p.color);
+    }
+    createParticles(p.x, p.y, p.color, 25, 1.6);
+    updateBuffsUI();
+  }
+
+  function updateBuffsUI() {
+    activeBuffsEl.innerHTML = '';
+    const now = Date.now();
+
+    if (activeShield) {
+      const tag = document.createElement('div');
+      tag.className = 'buff-tag';
+      tag.style.borderColor = '#58a6ff';
+      tag.style.color = '#58a6ff';
+      tag.innerHTML = `🛡️ Shield Ready`;
+      activeBuffsEl.appendChild(tag);
+    }
+
+    Object.keys(activeBuffs).forEach(type => {
+      const remaining = activeBuffs[type] - now;
+      if (remaining > 0) {
+        const conf = POWERUP_TYPES.find(pt => pt.type === type);
+        if (!conf) return;
+        const tag = document.createElement('div');
+        tag.className = 'buff-tag';
+        tag.style.borderColor = conf.color;
+        tag.style.color = conf.color;
+        tag.innerHTML = `${conf.icon} ${(remaining / 1000).toFixed(1)}s`;
+        activeBuffsEl.appendChild(tag);
+      } else {
+        delete activeBuffs[type];
+      }
+    });
+  }
+
+  function checkCombo(now) {
+    if (now - lastFruitTime < COMBO_TIMEOUT) {
+      comboCount++;
+    } else {
+      comboCount = 1;
+    }
+    lastFruitTime = now;
+    if (comboCount > maxComboAchieved) maxComboAchieved = comboCount;
+
+    if (comboCount >= 2) {
+      comboWrapper.style.opacity = '1';
+      comboPill.innerText = `COMBO x${comboCount}!`;
+      comboFill.style.width = '100%';
+    }
+  }
+
+  // Handle Magnet effect
+  function handleMagnet() {
+    const head = snake[0];
+    fruits.forEach(f => {
+      const dx = head.x - f.x;
+      const dy = head.y - f.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist > 0 && dist < 7) {
+        if (Math.abs(dx) > Math.abs(dy)) {
+          f.x += Math.sign(dx);
+        } else {
+          f.y += Math.sign(dy);
+        }
+      }
+    });
+  }
+
+  // -------------------------------------------------------------
+  // AI Decision & Pathfinding Engine
+  // -------------------------------------------------------------
+  function getAIDirection(enemy) {
+    const head = enemy.body[0];
+    const directions = [
+      { x: 0, y: -1 }, // Up
+      { x: 0, y: 1 },  // Down
+      { x: -1, y: 0 }, // Left
+      { x: 1, y: 0 }   // Right
+    ];
+
+    // Filter out direct reverse
+    const validMoves = directions.filter(d => !(d.x === -enemy.velocity.x && d.y === -enemy.velocity.y));
+
+    // Choose target based on personality & situational cues
+    let target = null;
+    const playerHead = snake[0];
+
+    if (enemy.behavior === 'hunter' && playerHead) {
+      // Hunter tries to intercept player trajectory
+      const distToPlayer = Math.hypot(playerHead.x - head.x, playerHead.y - head.y);
+      if (distToPlayer < 9) {
+        // Predict player next position to cut off
+        target = {
+          x: Math.max(0, Math.min(TILE_COUNT - 1, playerHead.x + velocity.x * 2)),
+          y: Math.max(0, Math.min(TILE_COUNT - 1, playerHead.y + velocity.y * 2))
+        };
+      }
+    } else if (enemy.behavior === 'collector') {
+      // Prioritize highest value fruit (Dragon > Star > Grape > Orange > Apple > Essence)
+      if (fruits.length > 0) {
+        const sortedFruits = fruits.slice().sort((a, b) => b.points - a.points);
+        target = sortedFruits[0];
+      }
+    }
+
+    // Default target: closest fruit or safe wander point
+    if (!target && fruits.length > 0) {
+      let closestDist = Infinity;
+      for (const fruit of fruits) {
+        const d = Math.hypot(fruit.x - head.x, fruit.y - head.y);
+        if (d < closestDist) {
+          closestDist = d;
+          target = fruit;
+        }
+      }
+    }
+
+    if (!target) {
+      target = { x: Math.floor(TILE_COUNT / 2), y: Math.floor(TILE_COUNT / 2) };
+    }
+
+    // Evaluate each valid move with heuristic scoring
+    const scoredMoves = [];
+
+    for (const move of validMoves) {
+      const nextX = head.x + move.x;
+      const nextY = head.y + move.y;
+
+      // 1. Lethal collision check: Wall or Obstacle
+      if (isCellObstacleOrWall(nextX, nextY)) {
+        continue;
+      }
+
+      // 2. Self body collision
+      if (enemy.body.slice(0, -1).some(seg => seg.x === nextX && seg.y === nextY)) {
+        continue;
+      }
+
+      // 3. Other enemy body collisions
+      let hitsOtherEnemy = false;
+      for (const other of enemySnakes) {
+        if (other === enemy || !other.alive) continue;
+        if (other.body.some(b => b.x === nextX && b.y === nextY)) {
+          hitsOtherEnemy = true;
+          break;
+        }
+      }
+      if (hitsOtherEnemy) continue;
+
+      // 4. Player body collision: AI avoids crashing into player's body unless aggressive head-on when bigger
+      const hitsPlayerBody = snake.slice(1).some(s => s.x === nextX && s.y === nextY);
+      if (hitsPlayerBody) continue;
+
+      // 5. Player head proximity check
+      let playerHeadRisk = 0;
+      if (playerHead && nextX === playerHead.x && nextY === playerHead.y) {
+        // Head-to-head collision!
+        if (enemy.body.length <= snake.length) {
+          playerHeadRisk = -500; // Dangerous for enemy!
+        } else {
+          playerHeadRisk = 300; // Advantage for enemy!
+        }
+      }
+
+      // Heuristic score: lower distance to target is better
+      const distToTarget = Math.hypot(target.x - nextX, target.y - nextY);
+      let score = 100 - distToTarget * 8 + playerHeadRisk;
+
+      // Bonus for continuing in same direction (reduces jittery zigzag)
+      if (move.x === enemy.velocity.x && move.y === enemy.velocity.y) {
+        score += 6;
+      }
+
+      // Lookahead: check if next step has available exits (prevent dead-end trapping)
+      let freeNeighbors = 0;
+      for (const nextDir of directions) {
+        const lookX = nextX + nextDir.x;
+        const lookY = nextY + nextDir.y;
+        if (!isCellObstacleOrWall(lookX, lookY)) {
+          freeNeighbors++;
+        }
+      }
+      score += freeNeighbors * 5;
+
+      scoredMoves.push({ move, score });
+    }
+
+    if (scoredMoves.length === 0) {
+      // Forced move if trapped
+      return validMoves[0] || { x: 0, y: -1 };
+    }
+
+    // Sort moves by score
+    scoredMoves.sort((a, b) => b.score - a.score);
+
+    // AI smartness random factor (Easy AI might pick sub-optimal move)
+    if (Math.random() > selectedDifficulty.aiSmartness && scoredMoves.length > 1) {
+      return scoredMoves[1].move;
+    }
+
+    return scoredMoves[0].move;
+  }
+
+  // Slay enemy snake and drop energy food along its body
+  function eliminateEnemy(enemy, cause = 'slain') {
+    enemy.alive = false;
+    enemiesKilled++;
+    killsValEl.innerText = enemiesKilled;
+
+    // Give bounty to player if player defeated/trapped it
+    let bountyScore = enemy.bounty;
+    if (activeBuffs.double && activeBuffs.double > Date.now()) bountyScore *= 2;
+    score += bountyScore;
+    scoreEl.innerText = score;
+
+    addFloatingText(`💀 ${enemy.name.toUpperCase()} DEFEATED! +${bountyScore}`, enemy.body[0].x, enemy.body[0].y, enemy.headColor);
+    createParticles(enemy.body[0].x, enemy.body[0].y, enemy.headColor, 35, 2);
+
+    // Drop valuable Energy Essence drops along enemy remains!
+    const essenceConfig = FRUITS_CONFIG.find(f => f.isEssence) || FRUITS_CONFIG[0];
+    enemy.body.forEach((seg, idx) => {
+      if (idx % 2 === 0 && fruits.length < 8) {
+        spawnFruit(essenceConfig, seg.x, seg.y);
+      }
+    });
+
+    checkRealmProgression();
+    updateLeaderboardHUD();
+  }
+
+  // Update live HUD leaderboard
+  function updateLeaderboardHUD() {
+    const allSnakes = [
+      { name: 'You (Player)', length: snake.length, isPlayer: true, color: selectedSkin.head }
+    ];
+
+    enemySnakes.forEach(e => {
+      if (e.alive) {
+        allSnakes.push({ name: e.name, length: e.body.length, isPlayer: false, color: e.headColor });
+      }
+    });
+
+    allSnakes.sort((a, b) => b.length - a.length);
+
+    const playerRank = allSnakes.findIndex(s => s.isPlayer) + 1;
+    rankBadgeEl.innerText = `👑 Rank #${playerRank} of ${allSnakes.length}`;
+    rankBadgeEl.style.color = playerRank === 1 ? '#ffd700' : '#58a6ff';
+
+    leaderboardBar.innerHTML = '';
+    allSnakes.slice(0, 4).forEach((s, idx) => {
+      const tag = document.createElement('div');
+      tag.className = 'leader-tag' + (s.isPlayer ? ' player' : '');
+      tag.style.borderColor = s.color;
+      tag.innerHTML = `<span style="color:${s.color};">●</span> #${idx + 1} ${s.name} (${s.length})`;
+      leaderboardBar.appendChild(tag);
+    });
+  }
+
+  // -------------------------------------------------------------
+  // Main Game Tick Loop
+  // -------------------------------------------------------------
+  function gameTick() {
+    if (!gameRunning || isPaused) return;
+
+    const now = Date.now();
+
+    // Survival bonus: +50 points every 25s
+    if (now - lastSurvivalRewardTime > 25000) {
+      lastSurvivalRewardTime = now;
+      const survivalBonus = 100 * currentRealm.level;
+      score += survivalBonus;
+      scoreEl.innerText = score;
+      addFloatingText(`⏱️ SURVIVAL BONUS +${survivalBonus}!`, snake[0].x, snake[0].y, '#7ee787');
+    }
+
+    // 1. Move Player Snake
+    velocity = { ...nextVelocity };
+    let playerHead = { x: snake[0].x + velocity.x, y: snake[0].y + velocity.y };
+
+    // Player Environmental Hazard interaction (Currents in ocean push snake)
+    environmentalHazards.forEach(hazard => {
+      if (hazard.type === 'current') {
+        if (playerHead.x >= hazard.x && playerHead.x < hazard.x + hazard.width &&
+            playerHead.y >= hazard.y && playerHead.y < hazard.y + hazard.height) {
+          playerHead.x += hazard.dirX;
+          playerHead.y += hazard.dirY;
+        }
+      }
+    });
+
+    // Check Wall Collisions
+    const hitWall = playerHead.x < 0 || playerHead.x >= TILE_COUNT || playerHead.y < 0 || playerHead.y >= TILE_COUNT;
+
+    // Check Self Tail Collisions (exclude tail segment if it will move away)
+    const hitSelfTail = snake.slice(0, -1).some(segment => segment.x === playerHead.x && segment.y === playerHead.y);
+
+    // Check Obstacle Collisions
+    const hitObstacleIndex = obstacles.findIndex(o => o.x === playerHead.x && o.y === playerHead.y);
+
+    let playerMoved = false;
+
+    if (hitWall || hitSelfTail || hitObstacleIndex !== -1) {
+      if (activeShield) {
+        activeShield = false;
+        createParticles(Math.max(0, Math.min(TILE_COUNT - 1, playerHead.x)), Math.max(0, Math.min(TILE_COUNT - 1, playerHead.y)), '#58a6ff', 25, 2);
+        addFloatingText('🛡️ SHIELD DEFLECTED COLLISION!', snake[0].x, snake[0].y, '#58a6ff');
+        if (hitObstacleIndex !== -1) {
+          obstacles.splice(hitObstacleIndex, 1);
+          snake.unshift(playerHead);
+          playerMoved = true;
+        } else if (hitWall) {
+          // Keep head inside arena bounds
+          playerHead.x = Math.max(0, Math.min(TILE_COUNT - 1, playerHead.x));
+          playerHead.y = Math.max(0, Math.min(TILE_COUNT - 1, playerHead.y));
+        }
+        updateBuffsUI();
+      } else {
+        return triggerGameOver('Fatal Collision', hitWall ? 'You smashed into the arena boundary barrier!' : 'You collided with a solid realm obstacle.');
+      }
+    } else {
+      snake.unshift(playerHead);
+      playerMoved = true;
+    }
+
+    // 2. Move AI Enemies & Process Combat
+    const isFrozen = activeBuffs.slow && activeBuffs.slow > now;
+
+    enemySnakes.forEach(enemy => {
+      if (!enemy.alive) return;
+
+      if (isFrozen) {
+        // Freeze powerup stops AI movement
+        return;
+      }
+
+      // Check move pacing
+      const aiDir = getAIDirection(enemy);
+      enemy.velocity = aiDir;
+      const enemyHead = { x: enemy.body[0].x + aiDir.x, y: enemy.body[0].y + aiDir.y };
+
+      // AI Wall / Obstacle collision
+      if (isCellObstacleOrWall(enemyHead.x, enemyHead.y)) {
+        eliminateEnemy(enemy, 'obstacle');
+        return;
+      }
+
+      // AI crashes into other enemy body
+      for (const other of enemySnakes) {
+        if (other === enemy || !other.alive) continue;
+        if (other.body.some(b => b.x === enemyHead.x && b.y === enemyHead.y)) {
+          eliminateEnemy(enemy, 'clash');
+          return;
+        }
+      }
+
+      // -------------------------------------------------------------
+      // BATTLE MECHANICS: Player vs AI Snake Interactions
+      // -------------------------------------------------------------
+      // Case A: HEAD-ON CLASH (Player Head meets Enemy Head)
+      if (playerHead.x === enemyHead.x && playerHead.y === enemyHead.y) {
+        if (activeShield) {
+          activeShield = false;
+          eliminateEnemy(enemy, 'shield-bash');
+          addFloatingText('🛡️ SHIELD SHATTERED ENEMY!', playerHead.x, playerHead.y, '#58a6ff');
+          updateBuffsUI();
+        } else if (snake.length > enemy.body.length) {
+          // Player is larger -> Player crushes enemy!
+          eliminateEnemy(enemy, 'crush');
+          addFloatingText('💥 OVERPOWERED RIVAL!', playerHead.x, playerHead.y, '#ffd700');
+        } else if (snake.length < enemy.body.length) {
+          // Enemy is larger -> Player defeated
+          return triggerGameOver('Crushed in Head-On Clash', `${enemy.name} was larger (${enemy.body.length} vs ${snake.length}) and overpowered your snake!`);
+        } else {
+          // Equal length: Rebound deflection
+          addFloatingText('⚡ REBOUND DEFLECTION!', playerHead.x, playerHead.y, '#ffd700');
+          createParticles(playerHead.x, playerHead.y, '#ffd700', 20, 2);
+        }
+        return;
+      }
+
+      // Case B: Enemy crashes into PLAYER'S BODY (Player cut off the enemy!)
+      const hitPlayerBody = snake.slice(1).some(s => s.x === enemyHead.x && s.y === enemyHead.y);
+      if (hitPlayerBody) {
+        eliminateEnemy(enemy, 'cutoff');
+        addFloatingText(`⚔️ CUT-OFF SUCCESS!`, enemyHead.x, enemyHead.y, '#7ee787');
+        return;
+      }
+
+      // Case C: Player crashes into ENEMY'S BODY (Enemy trapped/cut off player)
+      const playerHitEnemyBody = enemy.body.some(b => b.x === playerHead.x && b.y === playerHead.y);
+      if (playerHitEnemyBody) {
+        if (activeShield) {
+          activeShield = false;
+          createParticles(playerHead.x, playerHead.y, '#58a6ff', 25, 2);
+          addFloatingText('🛡️ SHIELD SAVED YOU FROM ENEMY BODY!', playerHead.x, playerHead.y, '#58a6ff');
+          updateBuffsUI();
+        } else {
+          return triggerGameOver('Interception Defeat', `You crashed into the body of ${enemy.name}! Outflank enemies to cut them off instead.`);
+        }
+      }
+
+      // Move enemy body
+      enemy.body.unshift(enemyHead);
+
+      // AI Fruit Eating
+      const aiEatenIndex = fruits.findIndex(f => f.x === enemyHead.x && f.y === enemyHead.y);
+      if (aiEatenIndex !== -1) {
+        const eaten = fruits[aiEatenIndex];
+        fruits.splice(aiEatenIndex, 1);
+        createParticles(eaten.x, eaten.y, eaten.color, 12);
+        // Enemy grows!
+        let extraGrow = eaten.grow - 1;
+        while (extraGrow > 0) {
+          enemy.body.push({ ...enemy.body[enemy.body.length - 1] });
+          extraGrow--;
+        }
+      } else {
+        enemy.body.pop();
+      }
+    });
+
+    // Respawn defeated AI enemies over time
+    const liveEnemies = enemySnakes.filter(e => e.alive).length;
+    if (liveEnemies < selectedDifficulty.enemyCount) {
+      nextEnemySpawnTick++;
+      if (nextEnemySpawnTick > 25) {
+        nextEnemySpawnTick = 0;
+        enemySnakes.push(createEnemySnake());
+        addFloatingText('⚠️ NEW RIVAL ENTERED ARENA!', 13, 13, '#ffa657');
+      }
+    }
+
+    // Magnet Pull for player
+    if (activeBuffs.magnet && activeBuffs.magnet > now) {
+      handleMagnet();
+    }
+
+    // Player Powerup collection
+    const collectedPowerupIndex = powerups.findIndex(p => p.x === playerHead.x && p.y === playerHead.y);
+    if (collectedPowerupIndex !== -1) {
+      const p = powerups[collectedPowerupIndex];
+      activatePowerup(p);
+      powerups.splice(collectedPowerupIndex, 1);
+    }
+
+    // Player Fruit collection
+    const eatenIndex = fruits.findIndex(f => f.x === playerHead.x && f.y === playerHead.y);
+    if (eatenIndex !== -1) {
+      const eaten = fruits[eatenIndex];
+      checkCombo(now);
+
+      // Score multiplier calculation
+      let multiplier = 1;
+      if (comboCount >= 2) multiplier += Math.min(3, (comboCount - 1) * 0.5);
+      if (activeBuffs.double && activeBuffs.double > now) multiplier *= 2;
+      if (activeBuffs.speed && activeBuffs.speed > now) multiplier *= 1.5;
+
+      const gainedScore = Math.round(eaten.points * multiplier);
+      score += gainedScore;
+      scoreEl.innerText = score;
+
+      createParticles(eaten.x, eaten.y, eaten.color, eaten.isRare ? 35 : 18);
+      addFloatingText(`+${gainedScore}`, eaten.x, eaten.y, eaten.color);
+
+      fruits.splice(eatenIndex, 1);
+
+      // Snake growth
+      let extraGrow = eaten.grow - 1;
+      while (extraGrow > 0) {
+        snake.push({ ...snake[snake.length - 1] });
+        extraGrow--;
+      }
+      lengthEl.innerText = snake.length;
+
+      // Ensure fruit supply
+      while (fruits.length < 3) {
+        spawnFruit();
+      }
+
+      // Random powerup spawn
+      if (Math.random() < 0.28) {
+        spawnPowerup();
+      }
+
+      checkRealmProgression();
+    } else if (playerMoved) {
+      snake.pop();
+    }
+
+    // Clean expired powerups on board
+    for (let i = powerups.length - 1; i >= 0; i--) {
+      if (now - powerups[i].createdAt > powerups[i].lifetime) {
+        powerups.splice(i, 1);
+      }
+    }
+
+    updateBuffsUI();
+    updateLeaderboardHUD();
+  }
+
+  function triggerGameOver(title = 'Battle Terminated!', desc = 'A rival snake intercepted your trajectory.') {
+    gameRunning = false;
+    if (gameTimeout) clearTimeout(gameTimeout);
+
+    if (score > highScore) {
+      highScore = score;
+      setSavedHighScore(highScore);
+      highScoreEl.innerText = highScore;
+    }
+
+    gameOverTitle.innerText = title;
+    gameOverDesc.innerText = desc;
+
+    statScore.innerText = score;
+    statKills.innerText = enemiesKilled;
+    statLength.innerText = snake.length;
+    statCombo.innerText = `x${maxComboAchieved}`;
+    statRealm.innerText = currentRealm.name.split(' ')[0];
+
+    // Compute rank
+    const allSnakes = [{ length: snake.length, isPlayer: true }];
+    enemySnakes.forEach(e => { if (e.alive) allSnakes.push({ length: e.body.length, isPlayer: false }); });
+    allSnakes.sort((a, b) => b.length - a.length);
+    const finalRank = allSnakes.findIndex(s => s.isPlayer) + 1;
+    statRank.innerText = `#${finalRank}`;
+
+    gameOverOverlay.classList.remove('hidden');
+  }
+
+  // -------------------------------------------------------------
+  // Canvas Rendering Loop (60fps)
+  // -------------------------------------------------------------
+  function drawGrid() {
+    ctx.strokeStyle = currentRealm.gridColor;
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= canvas.width; i += GRID_SIZE) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, canvas.height);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(0, i);
+      ctx.lineTo(canvas.width, i);
+      ctx.stroke();
+    }
+  }
+
+  function renderLoop() {
+    // Background
+    ctx.fillStyle = currentRealm.bg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drawGrid();
+
+    // Update Combo meter
+    if (comboCount >= 2) {
+      const elapsed = Date.now() - lastFruitTime;
+      const remainingPct = Math.max(0, 1 - (elapsed / COMBO_TIMEOUT));
+      comboFill.style.width = (remainingPct * 100) + '%';
+      if (remainingPct <= 0) {
+        comboCount = 0;
+        comboWrapper.style.opacity = '0';
+      }
+    }
+
+    // Draw Environmental Hazard Zones
+    environmentalHazards.forEach(h => {
+      ctx.save();
+      if (h.type === 'current') {
+        ctx.fillStyle = 'rgba(88, 166, 255, 0.12)';
+        ctx.strokeStyle = 'rgba(88, 166, 255, 0.4)';
+      } else {
+        ctx.fillStyle = 'rgba(188, 140, 255, 0.12)';
+        ctx.strokeStyle = 'rgba(188, 140, 255, 0.4)';
+      }
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeRect(h.x * GRID_SIZE, h.y * GRID_SIZE, h.width * GRID_SIZE, h.height * GRID_SIZE);
+      ctx.fillRect(h.x * GRID_SIZE, h.y * GRID_SIZE, h.width * GRID_SIZE, h.height * GRID_SIZE);
+
+      ctx.font = '10px sans-serif';
+      ctx.fillStyle = '#8b949e';
+      ctx.textAlign = 'center';
+      ctx.fillText(h.label, (h.x + h.width / 2) * GRID_SIZE, (h.y + h.height / 2) * GRID_SIZE);
+      ctx.restore();
+    });
+
+    // Draw Obstacles
+    obstacles.forEach(o => {
+      const x = o.x * GRID_SIZE;
+      const y = o.y * GRID_SIZE;
+      ctx.save();
+      ctx.fillStyle = currentRealm.obstacleColor;
+      ctx.shadowColor = currentRealm.obstacleGlow;
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.roundRect(x + 2, y + 2, GRID_SIZE - 4, GRID_SIZE - 4, 5);
+      ctx.fill();
+
+      // Inner barrier pattern
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(x + 4, y + 4, GRID_SIZE - 8, GRID_SIZE - 8);
+      ctx.restore();
+    });
+
+    // Draw Power-ups
+    powerups.forEach(p => {
+      p.pulse += 0.08;
+      const centerX = p.x * GRID_SIZE + GRID_SIZE / 2;
+      const centerY = p.y * GRID_SIZE + GRID_SIZE / 2;
+      const radius = (GRID_SIZE / 2 - 2) + Math.sin(p.pulse) * 2;
+
+      ctx.save();
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 14;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw Power-up Icon/Symbol
+      ctx.font = '11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(p.icon, centerX, centerY + 1);
+      ctx.restore();
+    });
+
+    // Draw Fruits & Energy Drops
+    fruits.forEach(fruit => {
+      fruit.pulse += fruit.pulseSpeed || 0.06;
+      const centerX = fruit.x * GRID_SIZE + GRID_SIZE / 2;
+      const centerY = fruit.y * GRID_SIZE + GRID_SIZE / 2;
+      const radius = (GRID_SIZE / 2 - 2) + Math.sin(fruit.pulse) * 1.8;
+
+      ctx.save();
+      ctx.shadowColor = fruit.glow;
+      ctx.shadowBlur = fruit.isRare || fruit.isEssence ? 18 : 10;
+      ctx.fillStyle = fruit.color;
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Inner shine
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.beginPath();
+      ctx.arc(centerX - radius * 0.3, centerY - radius * 0.3, radius * 0.32, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    });
+
+    // Draw AI Enemy Snakes
+    enemySnakes.forEach(enemy => {
+      if (!enemy.alive || enemy.body.length === 0) return;
+
+      enemy.body.forEach((seg, index) => {
+        const x = seg.x * GRID_SIZE;
+        const y = seg.y * GRID_SIZE;
+        const isHead = index === 0;
+
+        ctx.save();
+        if (isHead) {
+          ctx.fillStyle = enemy.headColor;
+          ctx.shadowColor = enemy.glowColor;
+          ctx.shadowBlur = 12;
+
+          ctx.beginPath();
+          ctx.roundRect(x + 1, y + 1, GRID_SIZE - 2, GRID_SIZE - 2, 7);
+          ctx.fill();
+
+          // Threat Indicator / Boss Crown
+          if (enemy.type === 'boss') {
+            ctx.font = '9px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('👑', x + GRID_SIZE / 2, y - 2);
+          }
+
+          // Enemy Eyes (Directional)
+          ctx.fillStyle = '#ffffff';
+          const eyeSize = 3;
+          let e1 = { x: x + 4, y: y + 4 };
+          let e2 = { x: x + GRID_SIZE - 7, y: y + 4 };
+
+          if (enemy.velocity.x === 1) {
+            e1 = { x: x + GRID_SIZE - 5, y: y + 4 };
+            e2 = { x: x + GRID_SIZE - 5, y: y + GRID_SIZE - 7 };
+          } else if (enemy.velocity.x === -1) {
+            e1 = { x: x + 3, y: y + 4 };
+            e2 = { x: x + 3, y: y + GRID_SIZE - 7 };
+          } else if (enemy.velocity.y === 1) {
+            e1 = { x: x + 4, y: y + GRID_SIZE - 5 };
+            e2 = { x: x + GRID_SIZE - 7, y: y + GRID_SIZE - 5 };
+          }
+
+          ctx.fillRect(e1.x, e1.y, eyeSize, eyeSize);
+          ctx.fillRect(e2.x, e2.y, eyeSize, eyeSize);
+        } else {
+          const ratio = 1 - (index / enemy.body.length) * 0.4;
+          ctx.fillStyle = `rgb(${Math.floor(enemy.bodyR * ratio)}, ${Math.floor(enemy.bodyG * ratio)}, ${Math.floor(enemy.bodyB * ratio)})`;
+          ctx.beginPath();
+          ctx.roundRect(x + 2, y + 2, GRID_SIZE - 4, GRID_SIZE - 4, 4);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+    });
+
+    // Draw Player Snake
+    if (snake.length > 0) {
+      // Draw Shield Aura if active
+      if (activeShield) {
+        const head = snake[0];
+        ctx.save();
+        ctx.strokeStyle = '#58a6ff';
+        ctx.shadowColor = 'rgba(88, 166, 255, 0.8)';
+        ctx.shadowBlur = 16;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc((head.x + 0.5) * GRID_SIZE, (head.y + 0.5) * GRID_SIZE, GRID_SIZE * 0.9, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      snake.forEach((seg, index) => {
+        const x = seg.x * GRID_SIZE;
+        const y = seg.y * GRID_SIZE;
+        const isHead = index === 0;
+
+        ctx.save();
+        if (isHead) {
+          ctx.fillStyle = selectedSkin.head;
+          ctx.shadowColor = selectedSkin.glow;
+          ctx.shadowBlur = 14;
+
+          ctx.beginPath();
+          ctx.roundRect(x + 1, y + 1, GRID_SIZE - 2, GRID_SIZE - 2, 7);
+          ctx.fill();
+
+          // Eyes
+          ctx.fillStyle = '#080b10';
+          const eyeSize = 3.5;
+          let eye1 = { x: x + 4, y: y + 4 };
+          let eye2 = { x: x + GRID_SIZE - 7.5, y: y + 4 };
+
+          if (velocity.x === 1) {
+            eye1 = { x: x + GRID_SIZE - 6, y: y + 4 };
+            eye2 = { x: x + GRID_SIZE - 6, y: y + GRID_SIZE - 7.5 };
+          } else if (velocity.x === -1) {
+            eye1 = { x: x + 3, y: y + 4 };
+            eye2 = { x: x + 3, y: y + GRID_SIZE - 7.5 };
+          } else if (velocity.y === 1) {
+            eye1 = { x: x + 4, y: y + GRID_SIZE - 6 };
+            eye2 = { x: x + GRID_SIZE - 7.5, y: y + GRID_SIZE - 6 };
+          }
+
+          ctx.fillRect(eye1.x, eye1.y, eyeSize, eyeSize);
+          ctx.fillRect(eye2.x, eye2.y, eyeSize, eyeSize);
+        } else {
+          const ratio = 1 - (index / snake.length) * 0.45;
+          ctx.fillStyle = `rgb(${Math.floor(selectedSkin.bodyR * ratio)}, ${Math.floor(selectedSkin.bodyG * ratio)}, ${Math.floor(selectedSkin.bodyB * ratio)})`;
+          ctx.shadowColor = `rgba(${selectedSkin.bodyR}, ${selectedSkin.bodyG}, ${selectedSkin.bodyB}, 0.25)`;
+          ctx.shadowBlur = 4;
+
+          ctx.beginPath();
+          ctx.roundRect(x + 2, y + 2, GRID_SIZE - 4, GRID_SIZE - 4, 4);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+    }
+
+    // Particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= p.decay;
+
+      if (p.alpha <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Floating Text FX
+    for (let i = floatingTexts.length - 1; i >= 0; i--) {
+      const ft = floatingTexts[i];
+      ft.y += ft.vy;
+      ft.alpha -= 0.018;
+
+      if (ft.alpha <= 0) {
+        floatingTexts.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = ft.alpha;
+      ctx.fillStyle = ft.color;
+      ctx.font = 'bold 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = ft.color;
+      ctx.shadowBlur = 6;
+      ctx.fillText(ft.text, ft.x, ft.y);
+      ctx.restore();
+    }
+
+    // Pause Screen Overlay
+    if (isPaused && gameRunning && settingsOverlay.classList.contains('hidden')) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(8, 11, 16, 0.65)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#58a6ff';
+      ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = '#58a6ff';
+      ctx.shadowBlur = 12;
+      ctx.fillText('⏸️ GAME PAUSED', canvas.width / 2, canvas.height / 2 - 8);
+      ctx.fillStyle = '#8b949e';
+      ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.shadowBlur = 0;
+      ctx.fillText('Press SPACE to resume', canvas.width / 2, canvas.height / 2 + 18);
+      ctx.restore();
+    }
+
+    requestAnimationFrame(renderLoop);
+  }
+
+  // Keyboard navigation & controls
+  window.addEventListener('keydown', e => {
+    const key = e.key.toLowerCase();
+
+    if (key === ' ' || e.code === 'Space') {
+      e.preventDefault();
+      if (gameRunning) {
+        isPaused = !isPaused;
+        if (!isPaused) scheduleNextTick();
+      }
+      return;
+    }
+
+    if (!gameRunning) return;
+
+    if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 's', 'a', 'd'].includes(key)) {
+      e.preventDefault();
+    }
+
+    if ((key === 'arrowup' || key === 'w') && velocity.y === 0) {
+      nextVelocity = { x: 0, y: -1 };
+    } else if ((key === 'arrowdown' || key === 's') && velocity.y === 0) {
+      nextVelocity = { x: 0, y: 1 };
+    } else if ((key === 'arrowleft' || key === 'a') && velocity.x === 0) {
+      nextVelocity = { x: -1, y: 0 };
+    } else if ((key === 'arrowright' || key === 'd') && velocity.x === 0) {
+      nextVelocity = { x: 1, y: 0 };
+    }
+  });
+
+  startBtn.addEventListener('click', initGame);
+  restartBtn.addEventListener('click', initGame);
+</script>
+</body>
+</html>
