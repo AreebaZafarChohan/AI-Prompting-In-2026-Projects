@@ -145,6 +145,9 @@ Project3-A-Page-That-Is-You/
 
 ## Publishing & Local Preview
 
+### Live Deployment
+- **Live Website**: [https://ai-prompting-in-2026-projects-qi5z.vercel.app/](https://ai-prompting-in-2026-projects-qi5z.vercel.app/)
+
 ### Local Preview
 To run the website locally:
 

@@ -262,4 +262,4 @@ Whack-a-Mole/
 
 - **Platform**: Static Web Deployment (Vercel / GitHub Pages / Cloudflare Pages compatible).
 - **Deployment Strategy**: Pure client-side static bundle requiring zero build steps or external CDNs.
-- **Final URL**: *(To be updated upon repository push / Vercel linking)*
+- **Live Demo**: [https://ai-prompting-in-2026-projects-y6nq.vercel.app/](https://ai-prompting-in-2026-projects-y6nq.vercel.app/)
