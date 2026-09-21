@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arcade Whack - Multi-Theme & Level Master</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&family=Fredoka:wght@600;700&family=Creepster&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="cyberpunk">
+  <!-- Theme Dynamic Atmospheric Backgrounds -->
+  <div class="cyber-background">
+    <div class="grid-overlay"></div>
+    <div class="ambient-glow primary-glow"></div>
+    <div class="ambient-glow secondary-glow"></div>
+  </div>
+
+  <!-- Level Up Visual Banner Notification -->
+  <div id="level-up-banner" class="level-up-banner hidden">
+    <div class="level-up-text">LEVEL UP!</div>
+    <div class="level-up-sub" id="level-up-sub">ENTERING LEVEL 2</div>
+  </div>
+
+  <!-- Confetti Canvas for Game Over / New Record Celebration -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <main class="game-container" id="game-container">
+    <!-- Header / HUD -->
+    <header class="hud">
+      <div class="hud-item score-box">
+        <span class="hud-label">SCORE</span>
+        <span id="score-display" class="hud-value">0</span>
+      </div>
+
+      <div class="hud-center-wrap">
+        <h1 class="hud-title" id="game-brand-title">CYBER<span>WHACK</span></h1>
+        <div class="hud-badges-row">
+          <div class="badge-pill level-pill" id="level-display">LVL: <span class="pill-val">1 - EASY</span></div>
+          <div class="badge-pill speed-pill" id="speed-state-display">SPEED: <span class="pill-val">SLOW</span></div>
+          <div class="badge-pill combo-pill hidden" id="combo-display"><span class="combo-text">COMBO</span> <span class="combo-val" id="combo-val">x2</span></div>
+        </div>
+      </div>
+
+      <div class="hud-item timer-box">
+        <span class="hud-label">TIME</span>
+        <span id="time-display" class="hud-value">30s</span>
+      </div>
+    </header>
+
+    <!-- Sub-HUD for High Score, Streak Tracker, Sound Toggle & In-game Settings Toggle -->
+    <div class="sub-hud">
+      <div class="high-score-chip">
+        <span class="chip-label">BEST RECORD</span>
+        <span id="best-score-display" class="chip-val">0</span>
+      </div>
+      <div class="sub-hud-controls">
+        <button id="sound-toggle-btn" class="icon-btn sound-btn" title="Toggle Sound">
+          <span id="sound-icon">🔊</span> <span id="sound-label">SFX: ON</span>
+        </button>
+        <button id="hud-settings-btn" class="icon-btn" title="Open Customization Settings">
+          ⚙ THEME
+        </button>
+      </div>
+    </div>
+
+    <!-- Timer Progress Bar -->
+    <div class="timer-bar-container">
+      <div id="timer-bar" class="timer-bar"></div>
+    </div>
+
+    <!-- 3x3 Interactive Play Grid -->
+    <section class="grid-section">
+      <div class="portal-grid" id="portal-grid">
+        <!-- 9 Holes / Portals dynamically generated with thematic creatures -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Start Screen Modal Overlay -->
+  <div id="start-screen" class="overlay active">
+    <div class="overlay-card">
+      <div class="scanner-line"></div>
+      <h1 class="glitch-title" data-text="ARCADE WHACK" id="start-modal-title">ARCADE WHACK</h1>
+      <p class="subtitle" id="start-modal-subtitle">WARP PORTAL INVASION</p>
+
+      <div class="high-score-banner">
+        <span>ALL-TIME BEST RECORD:</span>
+        <strong id="start-best-score" class="highlight-accent">0</strong>
+      </div>
+
+      <!-- Customization Controls on Start Screen -->
+      <div class="config-section">
+        <!-- 1. Theme Selection -->
+        <div class="config-group">
+          <label class="config-title">SELECT WORLD THEME</label>
+          <div class="theme-cards-grid" id="theme-select-container">
+            <button class="theme-card-btn active" data-theme="cyberpunk">
+              <span class="theme-preview-orb cyberpunk-orb"></span>
+              <div class="theme-info">
+                <span class="theme-card-name">Cyberpunk Arcade</span>
+                <span class="theme-card-desc">Obsidian, Neon & Alien Portals</span>
+              </div>
+            </button>
+            <button class="theme-card-btn" data-theme="meadow">
+              <span class="theme-preview-orb meadow-orb"></span>
+              <div class="theme-info">
+                <span class="theme-card-name">Classic Meadow</span>
+                <span class="theme-card-desc">Green Grass, Dirt Holes & Cute Moles</span>
+              </div>
+            </button>
+            <button class="theme-card-btn" data-theme="graveyard">
+              <span class="theme-preview-orb graveyard-orb"></span>
+              <div class="theme-info">
+                <span class="theme-card-name">Haunted Graveyard</span>
+                <span class="theme-card-desc">Dark Fog, Mossy Crypts & Spooky Ghosts</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Starting Level / Mode Selection -->
+        <div class="config-group">
+          <label class="config-title">STARTING DIFFICULTY</label>
+          <div class="option-chips" id="level-select-container">
+            <button class="chip-btn active" data-level="1">
+              <span class="chip-main">LVL 1</span>
+              <span class="chip-sub">Easy (~2.5s)</span>
+            </button>
+            <button class="chip-btn" data-level="2">
+              <span class="chip-main">LVL 2</span>
+              <span class="chip-sub">Medium (~1.8s)</span>
+            </button>
+            <button class="chip-btn" data-level="3">
+              <span class="chip-main">LVL 3</span>
+              <span class="chip-sub">Hard (~1.2s Dual)</span>
+            </button>
+            <button class="chip-btn" data-level="4">
+              <span class="chip-main">LVL 4</span>
+              <span class="chip-sub">Frenzy (Multi-Spawn)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button id="start-btn" class="cyber-btn primary">
+        <span id="start-btn-label">START MISSION</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- In-game Settings Modal Overlay -->
+  <div id="settings-screen" class="overlay">
+    <div class="overlay-card">
+      <div class="scanner-line"></div>
+      <h2 class="glitch-title" data-text="SYSTEM CONFIG">SYSTEM CONFIG</h2>
+      <p class="subtitle">ADJUST THEME & AUDIO</p>
+
+      <div class="config-section">
+        <!-- Live World Theme Switcher -->
+        <div class="config-group">
+          <label class="config-title">WORLD THEME</label>
+          <div class="theme-cards-grid" id="settings-theme-container">
+            <button class="theme-card-btn active" data-theme="cyberpunk">
+              <span class="theme-preview-orb cyberpunk-orb"></span>
+              <div class="theme-info">
+                <span class="theme-card-name">Cyberpunk Arcade</span>
+                <span class="theme-card-desc">Obsidian & Neon Warp Portals</span>
+              </div>
+            </button>
+            <button class="theme-card-btn" data-theme="meadow">
+              <span class="theme-preview-orb meadow-orb"></span>
+              <div class="theme-info">
+                <span class="theme-card-name">Classic Meadow</span>
+                <span class="theme-card-desc">Green Grass & Cute Moles</span>
+              </div>
+            </button>
+            <button class="theme-card-btn" data-theme="graveyard">
+              <span class="theme-preview-orb graveyard-orb"></span>
+              <div class="theme-info">
+                <span class="theme-card-name">Haunted Graveyard</span>
+                <span class="theme-card-desc">Dark Crypts & Spooky Ghosts</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Audio Sound Toggle in settings -->
+        <div class="config-group audio-config-row">
+          <label class="config-title">AUDIO EFFECTS</label>
+          <button id="modal-sound-btn" class="cyber-btn secondary sound-modal-btn">
+            <span id="modal-sound-text">🔊 Sound Effects: ENABLED</span>
+          </button>
+        </div>
+      </div>
+
+      <button id="close-settings-btn" class="cyber-btn primary">
+        <span>RESUME GAME</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Game Over Screen Modal Overlay -->
+  <div id="game-over-screen" class="overlay">
+    <div class="overlay-card">
+      <div class="scanner-line"></div>
+
+      <!-- New High Score celebratory badge -->
+      <div id="new-high-score-badge" class="high-score-badge hidden">
+        <span class="badge-glow">★ NEW HIGH SCORE ★</span>
+      </div>
+
+      <h2 class="glitch-title over" data-text="GAME OVER" id="game-over-title">SESSION TERMINATED</h2>
+      <p class="subtitle" id="game-over-subtitle">WARP ENERGY DEPLETED</p>
+
+      <!-- Large Animated Final Score -->
+      <div class="final-score-container">
+        <span class="final-score-title">FINAL SCORE</span>
+        <div id="final-score" class="final-score-big">0</div>
+      </div>
+
+      <div class="stats-display">
+        <div class="stat-card">
+          <span class="stat-label">TOTAL HITS</span>
+          <span id="final-hits" class="stat-value highlight-primary">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">HITS / MIN</span>
+          <span id="final-hpm" class="stat-value highlight-primary">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">MAX COMBO</span>
+          <span id="final-combo" class="stat-value highlight-secondary">x1</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">MAX LEVEL</span>
+          <span id="final-level" class="stat-value highlight-accent">LVL 1</span>
+        </div>
+        <div class="stat-card stat-card-wide">
+          <span class="stat-label">BEST RECORD</span>
+          <span id="final-best-score" class="stat-value highlight-accent">0</span>
+        </div>
+      </div>
+
+      <div class="action-buttons-row">
+        <button id="restart-btn" class="cyber-btn primary">
+          <span>PLAY AGAIN</span>
+        </button>
+        <button id="change-settings-btn" class="cyber-btn secondary">
+          <span>CHANGE THEME / START LVL</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

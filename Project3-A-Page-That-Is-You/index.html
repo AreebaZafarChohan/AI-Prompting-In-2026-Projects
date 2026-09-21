@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Areeba Zafar Chohan — Portfolio & Practical AI Prompting</title>
+  <!-- Google Fonts: Inter, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="glow-sphere glow-1"></div>
+  <div class="glow-sphere glow-2"></div>
+
+  <!-- Header / Navigation -->
+  <header class="navbar-wrapper">
+    <nav class="navbar container">
+      <a href="#hero" class="brand-logo">
+        <span class="logo-mark">AZ</span>
+        <span class="logo-text">Areeba Zafar</span>
+      </a>
+
+      <div class="nav-menu" id="navMenu">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#projects" class="nav-link">Shipped Projects</a>
+        <a href="#ai-capabilities" class="nav-link">AI Workflow</a>
+        <a href="#curriculum" class="nav-link">Prompting Study</a>
+        <a href="#guidance" class="nav-link">Guiding Others</a>
+        <a href="#credentials" class="nav-link">Credentials</a>
+        <a href="#contact" class="nav-link btn-nav">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
+          <i data-lucide="sun" class="light-icon"></i>
+          <i data-lucide="moon" class="dark-icon"></i>
+        </button>
+        <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-section container">
+      <div class="hero-content">
+        <div class="hero-identity-intro">
+          <span class="hero-initials-badge">AZ</span>
+          <div class="badge-status">
+            <span class="status-pulse"></span>
+            <span>Web Game Developer &amp; Practical AI Practitioner</span>
+          </div>
+        </div>
+
+        <h1 class="hero-title">
+          Engineering playable web apps &amp; <br class="title-break" />
+          <span class="gradient-text">practical AI prompt architectures.</span>
+        </h1>
+
+        <p class="hero-description">
+          I build and ship interactive browser games like my live <strong>Snake Game</strong>, and apply structured AI workflows across ChatGPT, Claude, and Gemini to turn ideas into verified, performant software.
+        </p>
+
+        <!-- Primary Recruiter Actions: Direct Play & Direct Connect -->
+        <div class="hero-game-callout">
+          <div class="game-callout-header">
+            <span class="callout-pill"><i data-lucide="sparkles"></i> Featured Shipped Build</span>
+            <span class="callout-domain">snake-game-by-junaid.netlify.app</span>
+          </div>
+          <!-- Primary Actions: Play Shipped Build & Connect / Collaborate -->
+          <div class="game-callout-actions">
+            <a href="https://snake-game-by-junaid.netlify.app/" target="_blank" rel="noopener noreferrer" class="btn btn-featured-play">
+              <i data-lucide="play-circle"></i>
+              <span>Play Live Snake Game</span>
+              <i data-lucide="external-link" class="btn-external-icon"></i>
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+              <i data-lucide="message-circle"></i>
+              <span>Connect &amp; Collaborate</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a href="#projects" class="btn btn-ghost-link">
+            <i data-lucide="gamepad-2"></i>
+            <span>Project Details</span>
+          </a>
+          <span class="dot-separator">•</span>
+          <a href="#ai-capabilities" class="btn btn-ghost-link">
+            <i data-lucide="layers"></i>
+            <span>AI Workflow</span>
+          </a>
+          <span class="dot-separator">•</span>
+          <a href="#curriculum" class="btn btn-ghost-link">
+            <i data-lucide="book-open"></i>
+            <span>Prompting Curriculum</span>
+          </a>
+          <span class="dot-separator">•</span>
+          <a href="#credentials" class="btn btn-ghost-link">
+            <i data-lucide="award"></i>
+            <span>Credentials</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Bento Profile Card -->
+      <div class="hero-visual">
+        <div class="bento-card hero-card">
+          <div class="card-header-bar">
+            <div class="card-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="card-tag">Verified Profile</span>
+          </div>
+
+          <div class="avatar-container">
+            <div class="avatar-placeholder">
+              <span class="avatar-initials">AZ</span>
+            </div>
+            <div class="avatar-details">
+              <h3>Areeba Zafar Chohan</h3>
+              <p class="role-title">Web Games &amp; Practical AI Practitioner</p>
+              <span class="location-tag"><i data-lucide="check-circle-2"></i> Summer Camp Exam Certified</span>
+            </div>
+          </div>
+
+          <div class="quick-stats-grid">
+            <div class="stat-box">
+              <span class="stat-number">Shipped</span>
+              <span class="stat-label">Live Web Game</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-number">3 Models</span>
+              <span class="stat-label">GPT • Claude • Gemini</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-number">2026</span>
+              <span class="stat-label">Agent Curriculum</span>
+            </div>
+          </div>
+
+          <div class="focus-pill">
+            <i data-lucide="gamepad-2"></i>
+            <span>Playable Canvas Game live on Netlify</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVIDENCE CATEGORIES BAR (VISUAL TAXONOMY) -->
+    <section class="evidence-legend-section container">
+      <div class="evidence-legend-card">
+        <div class="legend-title-group">
+          <i data-lucide="shield-check"></i>
+          <span class="legend-title">Evidence-Grounded Portfolio Map</span>
+        </div>
+        <div class="legend-items-list">
+          <a href="#projects" class="legend-link">
+            <span class="evidence-pill evidence-built"><i data-lucide="gamepad-2"></i> Built &amp; Shipped</span>
+          </a>
+          <a href="#curriculum" class="legend-link">
+            <span class="evidence-pill evidence-studied"><i data-lucide="book-marked"></i> Studied Curriculum</span>
+          </a>
+          <a href="#ai-capabilities" class="legend-link">
+            <span class="evidence-pill evidence-tool"><i data-lucide="cpu"></i> Tools in Practice</span>
+          </a>
+          <a href="#guidance" class="legend-link">
+            <span class="evidence-pill evidence-advisory"><i data-lucide="users"></i> Advisory &amp; Guidance</span>
+          </a>
+          <a href="#credentials" class="legend-link">
+            <span class="evidence-pill evidence-credential"><i data-lucide="award"></i> Verified Credential</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: WHO I AM (ABOUT) -->
+    <section id="about" class="section container">
+      <div class="section-header">
+        <span class="section-subtitle">Profile & Mission</span>
+        <h2 class="section-title">Who I am & what I bring to the table.</h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-narrative">
+          <p class="lead-text">
+            I am a web developer with practical, hands-on experience in building browser-based games, applying advanced AI prompting techniques, and guiding others through AI workflows.
+          </p>
+          <p>
+            Rather than treating AI as a novelty or search replacement, I work with models like <strong>ChatGPT</strong>, <strong>Claude</strong>, and <strong>Gemini</strong> as structured reasoning partners. I apply disciplined context management, iterative critique cycles, and multi-modal workflows to produce real, verified software.
+          </p>
+
+          <div class="personal-values">
+            <div class="value-item">
+              <div class="value-icon"><i data-lucide="terminal"></i></div>
+              <div>
+                <h4>Demonstrated Work</h4>
+                <p>I build and ship functioning web applications hosted on live platforms.</p>
+              </div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon"><i data-lucide="cpu"></i></div>
+              <div>
+                <h4>Real AI Tooling Fluency</h4>
+                <p>Proficient in orchestrating major LLMs with precise context layers and explicit constraints.</p>
+              </div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon"><i data-lucide="users"></i></div>
+              <div>
+                <h4>Practical Mentorship & Guidance</h4>
+                <p>Able to explain complex prompting architectures clearly and help others get reliable output.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-sidebar">
+          <div class="bento-card info-card">
+            <h3>Key Facts</h3>
+            <ul class="info-list">
+              <li>
+                <span class="info-label"><i data-lucide="gamepad"></i> Shipped Work:</span>
+                <span class="info-val">Playable Browser Games</span>
+              </li>
+              <li>
+                <span class="info-label"><i data-lucide="bot"></i> AI Assistants:</span>
+                <span class="info-val">ChatGPT, Claude, Gemini</span>
+              </li>
+              <li>
+                <span class="info-label"><i data-lucide="book-marked"></i> Curriculum:</span>
+                <span class="info-val">Agent Factory (2026)</span>
+              </li>
+              <li>
+                <span class="info-label"><i data-lucide="award"></i> Certification:</span>
+                <span class="info-val">Summer Camp Exam Completed</span>
+              </li>
+            </ul>
+
+            <div class="card-quote">
+              <i data-lucide="quote" class="quote-icon"></i>
+              <p>"Get the right context in, or keep the wrong context out — the foundation of effective AI engineering."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: SHIPPED PROJECTS (FEATURED GAME) -->
+    <section id="projects" class="section container">
+      <div class="section-header">
+        <div class="evidence-pill evidence-built"><i data-lucide="gamepad-2"></i> Things I Have Actually Built</div>
+        <h2 class="section-title">Shipped Web Game &amp; Software Production.</h2>
+      </div>
+
+      <div class="featured-project-box">
+        <div class="featured-project-content">
+          <div class="featured-badges">
+            <span class="badge-accent">Live Shipped Project</span>
+            <span class="badge-pill"><i data-lucide="check"></i> Deployed on Netlify</span>
+          </div>
+
+          <h3 class="featured-title">Classic Snake Web Game</h3>
+          <p class="featured-desc">
+            A fully playable, responsive browser game engineered with vanilla web technologies. Features responsive grid controls, state management, real-time score tracking, dynamic collision detection, and smooth gameplay mechanics.
+          </p>
+
+          <div class="project-tags-group">
+            <span class="tag">HTML5 Canvas</span>
+            <span class="tag">JavaScript State Logic</span>
+            <span class="tag">Responsive CSS</span>
+            <span class="tag">Netlify Deployment</span>
+          </div>
+
+          <div class="featured-action-bar">
+            <!-- Clear prominent action link to open and play the game -->
+            <a href="https://snake-game-by-junaid.netlify.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg">
+              <i data-lucide="gamepad-2"></i>
+              <span>Launch & Play Game</span>
+              <i data-lucide="arrow-up-right"></i>
+            </a>
+            <span class="live-url-display">
+              <i data-lucide="globe"></i> https://snake-game-by-junaid.netlify.app/
+            </span>
+          </div>
+        </div>
+
+        <div class="featured-project-preview">
+          <div class="preview-mockup">
+            <div class="mockup-header">
+              <div class="card-dots"><span></span><span></span><span></span></div>
+              <span class="mockup-title">snake-game-by-junaid.netlify.app</span>
+            </div>
+            <div class="mockup-body">
+              <div class="game-display-icon">
+                <i data-lucide="gamepad"></i>
+              </div>
+              <p class="mockup-label">Interactive Game Canvas</p>
+              <a href="https://snake-game-by-junaid.netlify.app/" target="_blank" rel="noopener noreferrer" class="btn btn-play-pill">
+                <i data-lucide="play"></i> Play Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: PROFESSIONAL AI ASSISTANTS CAPABILITIES -->
+    <section id="ai-capabilities" class="section container">
+      <div class="section-header">
+        <div class="evidence-pill evidence-tool"><i data-lucide="cpu"></i> Tools I Know How To Use</div>
+        <h2 class="section-title">Practical AI Assistant Workflows in Practice.</h2>
+        <p class="section-intro">
+          I do not treat AI as a quick copy-paste tool. I use leading foundational models with disciplined software engineering practices to plan architectures, write clean code, and execute multi-step problem solving.
+        </p>
+      </div>
+
+      <div class="skills-bento-grid">
+        <!-- ChatGPT -->
+        <div class="bento-card tool-card">
+          <div class="evidence-pill evidence-tool"><i data-lucide="message-square-code"></i> OpenAI Tooling</div>
+          <div class="tool-icon-wrapper">
+            <i data-lucide="message-square-code"></i>
+          </div>
+          <div class="tool-meta">
+            <h3>ChatGPT</h3>
+            <span class="tool-subtitle">OpenAI Ecosystem</span>
+          </div>
+          <p class="tool-desc">
+            Applied for rapid exploratory prototyping, iterative code refactoring, logic debugging, and structured data transformation using strict JSON schema outputs.
+          </p>
+          <ul class="tool-points">
+            <li><i data-lucide="check"></i> Multi-step logical problem breakdown</li>
+            <li><i data-lucide="check"></i> Test case generation & edge condition checks</li>
+            <li><i data-lucide="check"></i> Code reviews and documentation drafting</li>
+          </ul>
+        </div>
+
+        <!-- Claude -->
+        <div class="bento-card tool-card">
+          <div class="evidence-pill evidence-tool"><i data-lucide="layers"></i> Anthropic Tooling</div>
+          <div class="tool-icon-wrapper">
+            <i data-lucide="layers"></i>
+          </div>
+          <div class="tool-meta">
+            <h3>Claude</h3>
+            <span class="tool-subtitle">Anthropic Ecosystem</span>
+          </div>
+          <p class="tool-desc">
+            Utilized for large-context code comprehension, workspace artifact generation, multi-file codebase refactoring, and complex architectural design with extended thinking.
+          </p>
+          <ul class="tool-points">
+            <li><i data-lucide="check"></i> Deep context ingestion across complex repos</li>
+            <li><i data-lucide="check"></i> Artifact generation for interactive UI components</li>
+            <li><i data-lucide="check"></i> Strict adherence to constraints & safety protocols</li>
+          </ul>
+        </div>
+
+        <!-- Gemini -->
+        <div class="bento-card tool-card">
+          <div class="evidence-pill evidence-tool"><i data-lucide="sparkle"></i> Google Tooling</div>
+          <div class="tool-icon-wrapper">
+            <i data-lucide="sparkle"></i>
+          </div>
+          <div class="tool-meta">
+            <h3>Gemini</h3>
+            <span class="tool-subtitle">Google Ecosystem</span>
+          </div>
+          <p class="tool-desc">
+            Employed for multi-modal analysis (code diagrams, visual mockups, documents), fast retrieval-grounded searches, and cross-checking outputs across competing model ecosystems.
+          </p>
+          <ul class="tool-points">
+            <li><i data-lucide="check"></i> Multi-modal input inspection (visuals & docs)</li>
+            <li><i data-lucide="check"></i> Real-time factual and reference verification</li>
+            <li><i data-lucide="check"></i> Cross-model benchmarking and output grading</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: AI PROMPTING CURRICULUM (AGENT FACTORY 2026) -->
+    <section id="curriculum" class="section container">
+      <div class="section-header-flex">
+        <div>
+          <div class="evidence-pill evidence-studied"><i data-lucide="book-marked"></i> Things I Have Studied</div>
+          <h2 class="section-title">Panaversity Agent Factory: AI Prompting (2026).</h2>
+        </div>
+        <a href="https://agentfactory.panaversity.org/docs/ai-prompting-2026" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+          <span>Read Verified Course Material</span>
+          <i data-lucide="external-link"></i>
+        </a>
+      </div>
+
+      <div class="curriculum-grid">
+        <!-- Part 1 -->
+        <div class="bento-card curriculum-card">
+          <div class="part-badge">Part 1 • Studied Curriculum</div>
+          <h3>How AI Knows Things</h3>
+          <p class="part-summary">Understanding model memory, retrieval mechanics, and the boundaries of pre-trained knowledge.</p>
+          <ul class="curriculum-list">
+            <li><strong>Novice vs. Power User:</strong> Transitioning from simple one-liners to structured briefings with context, goals, and strict constraints.</li>
+            <li><strong>Pretrained Knowledge Limits:</strong> Distinguishing training density from factual confidence; avoiding hallucinations on private or obscure data.</li>
+            <li><strong>The 3 Retrieval Modes:</strong> Directing models to internal parametric memory, web grounding, or multi-source deep research.</li>
+          </ul>
+        </div>
+
+        <!-- Part 2 -->
+        <div class="bento-card curriculum-card">
+          <div class="part-badge">Part 2 • Studied Curriculum</div>
+          <h3>Talking to AI Well</h3>
+          <p class="part-summary">Context stack architecture, extended reasoning, and iterative refinement techniques.</p>
+          <ul class="curriculum-list">
+            <li><strong>6-Layer Context Stack:</strong> Managing system instructions, memory, tool definitions, chat logs, and workspace files without context degradation.</li>
+            <li><strong>Extended Reasoning:</strong> Activating built-in deliberate thinking for high-complexity decisions and algorithmic trade-offs.</li>
+            <li><strong>Neutralizing Sycophancy:</strong> Counteracting model flattery using neutral phrasing, rubric-based scoring, and permission to say "I don't know".</li>
+            <li><strong>Brainstorm-Iterate Loop:</strong> Staged generation (context → options → critique → revision → finalized draft).</li>
+          </ul>
+        </div>
+
+        <!-- Part 3 -->
+        <div class="bento-card curriculum-card">
+          <div class="part-badge">Part 3 • Studied Curriculum</div>
+          <h3>Beyond Text</h3>
+          <p class="part-summary">Multimodal inputs, artifacts, single-prompt apps, and programmatic data validation.</p>
+          <ul class="curriculum-list">
+            <li><strong>Multimodal Inputs:</strong> Processing visual diagrams, interface mockups, and transcribed voice briefings.</li>
+            <li><strong>Single-Prompt App Generation:</strong> Specifying inputs, state, and visual UI to build interactive single-screen web utilities and games.</li>
+            <li><strong>Code-Driven Data Analysis:</strong> Enforcing code-execution verification (Python/JS scripts) rather than uncalculated statistical estimations.</li>
+          </ul>
+        </div>
+
+        <!-- Part 4 -->
+        <div class="bento-card curriculum-card">
+          <div class="part-badge">Part 4 • Studied Curriculum</div>
+          <h3>Safety, Agents & Tool Selection</h3>
+          <p class="part-summary">Agent safety ladders, token economics, and cross-model evaluation.</p>
+          <ul class="curriculum-list">
+            <li><strong>Desktop Agents & Access:</strong> Operating file-aware agents using staged permission ladders (plan-first execution, scoped permissions).</li>
+            <li><strong>Media Economics:</strong> Factoring token costs, latency, and capability trade-offs into tool selection.</li>
+            <li><strong>Cross-Model Evaluation:</strong> Utilizing competing model providers as objective peer-reviewers for critical deliverables.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: GUIDANCE / PRACTICAL KNOWLEDGE -->
+    <section id="guidance" class="section container">
+      <div class="guidance-card">
+        <div class="guidance-header">
+          <div class="evidence-pill evidence-advisory"><i data-lucide="users"></i> Things I Can Help Others With</div>
+          <h2 class="section-title">Practical Guidance in Modern AI Prompting Techniques.</h2>
+          <p class="guidance-intro">
+            I help students, peers, and collaborators bridge the gap between basic chat prompting and structured, dependable AI workflows.
+          </p>
+        </div>
+
+        <div class="guidance-points-grid">
+          <div class="guidance-item">
+            <div class="guidance-icon"><i data-lucide="check-square"></i></div>
+            <h4>Context Engineering</h4>
+            <p>Guiding how to assemble the right background files, constraints, and instructions so the model doesn't drift or produce generic text.</p>
+          </div>
+
+          <div class="guidance-item">
+            <div class="guidance-icon"><i data-lucide="shield-alert"></i></div>
+            <h4>Debiasing & Anti-Sycophancy</h4>
+            <p>Teaching how to formulate prompts with objective grading criteria so models deliver candid critiques instead of unhelpful agreement.</p>
+          </div>
+
+          <div class="guidance-item">
+            <div class="guidance-icon"><i data-lucide="repeat"></i></div>
+            <h4>Structured Iteration Cycles</h4>
+            <p>Demonstrating how to break complex tasks into staged phases: context briefing, multi-option generation, critique, and verified code.</p>
+          </div>
+
+          <div class="guidance-item">
+            <div class="guidance-icon"><i data-lucide="cpu"></i></div>
+            <h4>Tool & Model Selection</h4>
+            <p>Advising when to use ChatGPT, Claude, or Gemini based on context window needs, reasoning depth, and multimodal inputs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: CREDENTIALS & CERTIFICATION -->
+    <section id="credentials" class="section container">
+      <div class="section-header">
+        <div class="evidence-pill evidence-credential"><i data-lucide="award"></i> Verified Credential &amp; Certificate</div>
+        <h2 class="section-title">Summer Camp Examination &amp; Official Credential.</h2>
+      </div>
+
+      <div class="cert-bento-grid">
+        <div class="bento-card cert-card">
+          <div class="cert-badge-box">
+            <i data-lucide="award"></i>
+          </div>
+          <div class="cert-details">
+            <div class="evidence-pill evidence-credential"><i data-lucide="check-circle-2"></i> Verified Examination Passed</div>
+            <h3>Summer Camp Examination &amp; Certificate of Completion</h3>
+            <p class="cert-desc">
+              Successfully completed the structured summer camp curriculum and passed the comprehensive final examination covering computer programming fundamentals, problem-solving, and practical technical implementation.
+            </p>
+
+            <div class="cert-highlights">
+              <div class="highlight-pill">
+                <i data-lucide="check-circle-2"></i> Comprehensive Final Exam Passed
+              </div>
+              <div class="highlight-pill">
+                <i data-lucide="check-circle-2"></i> Verified Program Completion
+              </div>
+              <div class="highlight-pill">
+                <i data-lucide="check-circle-2"></i> Practical Hands-on Exercises Completed
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: CONTACT & COLLABORATION -->
+    <section id="contact" class="section container">
+      <div class="contact-card">
+        <div class="contact-header">
+          <span class="section-subtitle">Let's Connect</span>
+          <h2 class="section-title">Have a project, question, or looking for guidance?</h2>
+          <p class="contact-desc">
+            Whether you want to discuss web games, test AI prompting workflows, or collaborate on a project, feel free to reach out directly.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info-list">
+            <!-- GitHub -->
+            <a href="https://github.com/AreebaZafarChohan" target="_blank" rel="noopener noreferrer" class="contact-channel-item">
+              <div class="channel-icon">
+                <i data-lucide="github"></i>
+              </div>
+              <div class="channel-text">
+                <span class="channel-label">GitHub Profile</span>
+                <span class="channel-value">github.com/AreebaZafarChohan</span>
+              </div>
+              <i data-lucide="arrow-right" class="channel-arrow"></i>
+            </a>
+
+            <!-- Shipped Project Link -->
+            <a href="https://snake-game-by-junaid.netlify.app/" target="_blank" rel="noopener noreferrer" class="contact-channel-item">
+              <div class="channel-icon">
+                <i data-lucide="gamepad-2"></i>
+              </div>
+              <div class="channel-text">
+                <span class="channel-label">Play Shipped Snake Game</span>
+                <span class="channel-value">snake-game-by-junaid.netlify.app</span>
+              </div>
+              <i data-lucide="arrow-right" class="channel-arrow"></i>
+            </a>
+
+            <!-- AI Prompting Reference -->
+            <a href="https://agentfactory.panaversity.org/docs/ai-prompting-2026" target="_blank" rel="noopener noreferrer" class="contact-channel-item">
+              <div class="channel-icon">
+                <i data-lucide="book-open"></i>
+              </div>
+              <div class="channel-text">
+                <span class="channel-label">Course Reference</span>
+                <span class="channel-value">Panaversity AI Prompting 2026</span>
+              </div>
+              <i data-lucide="arrow-right" class="channel-arrow"></i>
+            </a>
+          </div>
+
+          <!-- Quick Message Form -->
+          <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); handleFormSubmit();">
+            <div class="form-group">
+              <label for="userName">Your Name</label>
+              <input type="text" id="userName" placeholder="e.g. Sarah Jenkins" required />
+            </div>
+            <div class="form-group">
+              <label for="userEmail">Email Address</label>
+              <input type="email" id="userEmail" placeholder="e.g. sarah@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="userMessage">Message or Question</label>
+              <textarea id="userMessage" rows="4" placeholder="Ask about AI prompting, web games, or opportunities..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+              <span>Send Message</span>
+              <i data-lucide="send"></i>
+            </button>
+            <p id="formFeedback" class="form-feedback"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer-wrapper">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <span class="footer-brand">Areeba Zafar Chohan</span>
+        <p class="footer-copy">Verified skills in Web Game Development & Practical AI Prompting. &copy; 2026</p>
+      </div>
+      <div class="footer-links">
+        <a href="#hero">Back to top <i data-lucide="arrow-up"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
