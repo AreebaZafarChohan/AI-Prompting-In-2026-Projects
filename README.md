@@ -1,18 +1,19 @@
 # 🚀 AI Prompting in 2026 — Agent Factory Projects Showcase
 
-Welcome to the comprehensive repository for the **AI Prompting in 2026** series (Panaversity Agent Factory). This repository contains three major production-grade projects designed, developed, iteratively refined, and deployed using modern **Agentic AI & Prompt Engineering Workflows**.
+Welcome to the comprehensive repository for the **AI Prompting in 2026** series (Panaversity Agent Factory). This repository contains major production-grade projects designed, developed, iteratively refined, and deployed using modern **Agentic AI & Prompt Engineering Workflows**.
 
 ---
 
 ## 🌟 Live Deployments Overview
 
-| Project | Name & Description | Live Deployed Link | Tech Stack |
+| Project | Name & Description | Live Deployed Link / Path | Tech Stack |
 | :--- | :--- | :--- | :--- |
 | **Project 1 (v1)** | **Snake Battle — Multi-Realm Tactical Combat** | [Live Demo](https://ai-prompting-in-2026-projects.vercel.app/) | HTML5 Canvas, Vanilla JS |
 | **Project 1 (v2)** | **Snake Battle — Fruit Frenzy & Arcade Modes** | [Live Demo](https://ai-prompting-in-2026-projects-z5z2.vercel.app/) | HTML5 Canvas, Web Audio API |
 | **Project 1 (v3)** | **Snake Battle — Agentic Iterative Arena** | [Live Demo](https://ai-prompting-in-2026-projects-cgzu.vercel.app/) | HTML5 Canvas, AI Bot Opponents |
 | **Project 2** | **Whack-a-Mole — Cyberpunk Arcade (v3)** | [Live Demo](https://ai-prompting-in-2026-projects-y6nq.vercel.app/) | Vanilla JS, Procedural SVG, Web Audio API |
 | **Project 3** | **A Page That Is You — Personal Evidence Portfolio** | [Live Demo](https://ai-prompting-in-2026-projects-qi5z.vercel.app/) | Semantic HTML5, CSS Bento Grid, Vanilla JS |
+| **Project 4** | **A Mini-Textbook — Newton's Third Law of Motion** | [`Project4-A-Mini-Textbook/`](./Project4-A-Mini-Textbook/project-4/) | Guided Inquiry, Markdown, Process Documentation |
 
 ---
 
@@ -53,14 +54,25 @@ Welcome to the comprehensive repository for the **AI Prompting in 2026** series 
 
 ---
 
+### 📖 Project 4: A Mini-Textbook — Newton's Third Law of Motion
+- **Directory:** [`Project4-A-Mini-Textbook/`](./Project4-A-Mini-Textbook/)
+- **Documentation:** [`Project4-A-Mini-Textbook/project-4/README.md`](./Project4-A-Mini-Textbook/project-4/README.md)
+- **Concept & Working:**
+  - **Process-Driven AI Steering:** Documents directing, questioning, evaluating, and correcting AI from weak initial prompts to a complete high school physics chapter.
+  - **Guided Inquiry Pedagogy:** Implements **Option C (Predict, Test, Explain)** and **Outline 2 (Guided Inquiry)** using thought experiments, ASCII visual interaction models, and misconception busting.
+  - **Pedagogical Revision Features:** Includes conceptual checkpoints, end-of-chapter recap, 5 active-recall flashcards, a 3-question quiz with full answer keys, and a 7-day high school revision study schedule.
+  - **Rigorous Evaluation & Fact-Checking:** Features a 4-metric rubric evaluation, applied improvements changelog, verified 8-claim fact-check supported by OpenStax College Physics 2e & NASA Glenn Research Center, and a 4-part student reflection in an 18-stage process notebook.
+
+---
+
 ## 🛠️ Key Agentic Development Methodologies
 
 Across all projects, development followed a rigorous agentic loop:
-1. **Separation of Ideation and Implementation:** Establishing themes and design tokens before code generation.
+1. **Separation of Ideation and Implementation:** Establishing themes, pedagogy, and design tokens before code or content generation.
 2. **Context Engineering:** Supplying structured requirements, input/output contracts, and strict scope limits.
-3. **Continuous Playtesting & Feedback Loops:** Identifying mechanical friction during real runtime testing and issuing targeted polish prompts.
-4. **Self-Scoring Rubrics:** Evaluating code quality, visual clarity, game feel, and UX against objective standards.
-5. **Zero-Dependency Architecture:** Clean, maintainable, lightweight vanilla web technologies (HTML5, CSS3, JavaScript ES6+, Web Audio API, SVG).
+3. **Continuous Playtesting & Feedback Loops:** Identifying mechanical or conceptual friction during real testing and issuing targeted polish prompts.
+4. **Self-Scoring Rubrics & Fact-Checking:** Evaluating quality, clarity, age-fit, and accuracy against objective academic and technical standards.
+5. **Zero-Dependency & Clean Architecture:** Maintainable, lightweight vanilla web technologies and structured markdown artifacts.
 
 ---
 
