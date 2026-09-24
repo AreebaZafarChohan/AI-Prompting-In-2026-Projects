@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newton's Third Law of Motion — Mini Book</title>
+<style>
+  :root {
+    --bg: #fafbfc;
+    --bg-alt: #f0f2f5;
+    --surface: #ffffff;
+    --surface-hover: #f8f9fa;
+    --border: #e1e5ea;
+    --border-light: #eef1f4;
+    --text: #1a1d23;
+    --text-secondary: #5a6170;
+    --text-tertiary: #8a9099;
+    --accent: #1a56db;
+    --accent-light: #e8eefb;
+    --accent-hover: #1444b0;
+    --predict: #7c3aed;
+    --predict-bg: #f3f0ff;
+    --predict-border: #ddd6fe;
+    --explain: #0891b2;
+    --explain-bg: #ecfeff;
+    --explain-border: #a5f3fc;
+    --test: #ea580c;
+    --test-bg: #fff7ed;
+    --test-border: #fed7aa;
+    --success: #16a34a;
+    --success-bg: #f0fdf4;
+    --success-border: #bbf7d0;
+    --error: #dc2626;
+    --error-bg: #fef2f2;
+    --error-border: #fecaca;
+    --warning: #d97706;
+    --warning-bg: #fffbeb;
+    --warning-border: #fde68a;
+    --math-bg: #f8f9fb;
+    --flashcard-front: #1a56db;
+    --flashcard-back: #16a34a;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.1);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Georgia', 'Times New Roman', serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    --max-w: 720px;
+    --nav-h: 56px;
+    --transition: 180ms ease;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1117;
+      --bg-alt: #181b23;
+      --surface: #1e2129;
+      --surface-hover: #252830;
+      --border: #2e323c;
+      --border-light: #252830;
+      --text: #e4e6ea;
+      --text-secondary: #9ca1ad;
+      --text-tertiary: #6b7180;
+      --accent: #60a5fa;
+      --accent-light: #1e293b;
+      --accent-hover: #93c5fd;
+      --predict: #a78bfa;
+      --predict-bg: #1e1633;
+      --predict-border: #3b2d5c;
+      --explain: #22d3ee;
+      --explain-bg: #0c2d33;
+      --explain-border: #164e5a;
+      --test: #fb923c;
+      --test-bg: #2d1f0f;
+      --test-border: #5c3a1a;
+      --success: #4ade80;
+      --success-bg: #0f2918;
+      --success-border: #1a4a2a;
+      --error: #f87171;
+      --error-bg: #2d1212;
+      --error-border: #5c1a1a;
+      --warning: #fbbf24;
+      --warning-bg: #2d2410;
+      --warning-border: #5c4a1a;
+      --math-bg: #1a1d25;
+      --flashcard-front: #3b82f6;
+      --flashcard-back: #22c55e;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.2);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.3);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    html { scroll-behavior: auto; }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 20px); }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAV ─── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    height: var(--nav-h);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 20px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255,255,255,.88);
+  }
+  @media (prefers-color-scheme: dark) {
+    .nav { background: rgba(30,33,41,.92); }
+  }
+  .nav-inner {
+    max-width: 1100px; width: 100%; margin: 0 auto;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .nav-title {
+    font-weight: 700; font-size: 15px; color: var(--text);
+    white-space: nowrap;
+  }
+  .nav-title span { color: var(--accent); }
+  .nav-label {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--text-tertiary);
+    background: var(--bg-alt); padding: 3px 8px; border-radius: 4px;
+    white-space: nowrap;
+  }
+  .nav-spacer { flex: 1; }
+  .nav-progress {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--text-secondary); font-weight: 500;
+  }
+  .nav-progress-bar {
+    width: 100px; height: 4px; background: var(--bg-alt);
+    border-radius: 2px; overflow: hidden;
+  }
+  .nav-progress-fill {
+    height: 100%; width: 0%; background: var(--accent);
+    border-radius: 2px; transition: width .3s ease;
+  }
+  .nav-section-btn {
+    display: none; align-items: center; gap: 6px;
+    background: var(--bg-alt); border: 1px solid var(--border);
+    padding: 5px 12px; border-radius: var(--radius-sm);
+    font-size: 12px; font-weight: 500; color: var(--text-secondary);
+    cursor: pointer; transition: all var(--transition);
+  }
+  .nav-section-btn:hover { border-color: var(--accent); color: var(--accent); }
+  @media (min-width: 900px) { .nav-section-btn { display: flex; } }
+  .nav-section-btn svg { width: 14px; height: 14px; }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: 92vh; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    color: #fff; text-align: center;
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: .08;
+    background-image:
+      linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-particles {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .particle {
+    position: absolute; width: 3px; height: 3px;
+    background: rgba(96,165,250,.4); border-radius: 50%;
+    animation: particleFloat linear infinite;
+  }
+  @keyframes particleFloat {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+  }
+  .hero-content { position: relative; z-index: 2; padding: 40px 20px; max-width: 700px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(96,165,250,.15); border: 1px solid rgba(96,165,250,.25);
+    padding: 6px 14px; border-radius: 20px; font-size: 13px;
+    color: #93c5fd; margin-bottom: 28px; font-weight: 500;
+  }
+  .hero-badge svg { width: 16px; height: 16px; }
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.15; margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: #94a3b8; margin-bottom: 8px; font-weight: 400;
+  }
+  .hero-meta {
+    font-size: 14px; color: #64748b; margin-bottom: 36px;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 4px; }
+
+  /* Hero force diagram */
+  .hero-diagram {
+    margin: 32px auto; max-width: 380px; position: relative;
+  }
+  .hero-diagram svg { width: 100%; height: auto; }
+
+  .hero-start {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: #fff;
+    padding: 14px 32px; border-radius: var(--radius-md);
+    font-size: 16px; font-weight: 600; border: none; cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: 0 4px 14px rgba(26,86,219,.35);
+  }
+  .hero-start:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,86,219,.4); }
+  .hero-start:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .hero-start svg { width: 18px; height: 18px; }
+
+  /* ─── SECTION NAV ─── */
+  .section-nav {
+    position: sticky; top: var(--nav-h); z-index: 50;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .section-nav::-webkit-scrollbar { display: none; }
+  .section-nav-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 20px;
+    display: flex; gap: 0;
+  }
+  .section-nav a {
+    display: flex; align-items: center; gap: 5px;
+    padding: 12px 14px; font-size: 13px; font-weight: 500;
+    color: var(--text-secondary); text-decoration: none;
+    white-space: nowrap; border-bottom: 2px solid transparent;
+    transition: all var(--transition);
+  }
+  .section-nav a:hover { color: var(--text); background: var(--surface-hover); }
+  .section-nav a.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  .section-nav a .num {
+    font-size: 11px; font-weight: 700; color: var(--text-tertiary);
+    min-width: 16px;
+  }
+  .section-nav a.active .num { color: var(--accent); }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main { max-width: var(--max-w); margin: 0 auto; padding: 0 20px; }
+
+  /* ─── SECTION ─── */
+  .chapter-section {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--border-light);
+    opacity: 0; transform: translateY(12px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .chapter-section.visible { opacity: 1; transform: translateY(0); }
+  .chapter-section:last-child { border-bottom: none; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px;
+  }
+  .section-num {
+    font-size: 13px; font-weight: 700; color: var(--accent);
+    background: var(--accent-light); width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px; flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: clamp(1.3rem, 3vw, 1.65rem);
+    font-weight: 700; letter-spacing: -0.01em; line-height: 1.3;
+  }
+  .section-header .section-subtitle {
+    font-size: 14px; color: var(--text-secondary); font-weight: 400;
+    display: block; margin-top: 2px;
+  }
+
+  .chapter-text p {
+    margin-bottom: 16px; font-size: 16px; line-height: 1.75;
+    color: var(--text);
+  }
+  .chapter-text strong { font-weight: 600; }
+
+  /* ─── CALLOUT BOXES ─── */
+  .callout {
+    padding: 20px 24px; border-radius: var(--radius-md);
+    margin: 24px 0; border-left: 4px solid;
+  }
+  .callout-predict {
+    background: var(--predict-bg); border-color: var(--predict);
+  }
+  .callout-test {
+    background: var(--test-bg); border-color: var(--test);
+  }
+  .callout-explain {
+    background: var(--explain-bg); border-color: var(--explain);
+  }
+  .callout-important {
+    background: var(--warning-bg); border-color: var(--warning);
+  }
+  .callout-label {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; margin-bottom: 10px;
+  }
+  .callout-predict .callout-label { color: var(--predict); }
+  .callout-test .callout-label { color: var(--test); }
+  .callout-explain .callout-label { color: var(--explain); }
+  .callout-important .callout-label { color: var(--warning); }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout ul { margin: 8px 0 0 18px; }
+  .callout li { margin-bottom: 6px; font-size: 15px; }
+
+  /* ─── FORMULA / MATH ─── */
+  .math-block {
+    background: var(--math-bg); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 24px;
+    margin: 24px 0; text-align: center;
+  }
+  .math-block .formula {
+    font-family: var(--font-serif); font-size: 22px;
+    font-style: italic; color: var(--text); letter-spacing: .02em;
+  }
+  .math-block .formula sub { font-size: .7em; }
+  .math-block .formula .vec { text-decoration: overline; }
+  .math-annotation {
+    margin-top: 14px; text-align: left;
+    display: grid; grid-template-columns: auto 1fr; gap: 6px 12px;
+    font-size: 14px; color: var(--text-secondary);
+  }
+  .math-annotation dt {
+    font-weight: 600; color: var(--text); white-space: nowrap;
+  }
+  .math-annotation dd { line-height: 1.5; }
+
+  /* ─── FORCE DIAGRAM ─── */
+  .force-diagram {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 24px;
+    margin: 28px 0; box-shadow: var(--shadow-sm);
+  }
+  .force-diagram .diagram-title {
+    font-size: 13px; font-weight: 600; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 16px;
+    text-align: center;
+  }
+  .force-diagram svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  .force-diagram .diagram-caption {
+    font-size: 13px; color: var(--text-tertiary); text-align: center;
+    margin-top: 12px; font-style: italic;
+  }
+
+  /* ─── EXAMPLE CARDS ─── */
+  .example-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 24px;
+    margin: 24px 0; box-shadow: var(--shadow-sm);
+    position: relative; overflow: hidden;
+  }
+  .example-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--accent);
+  }
+  .example-card .example-label {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--accent); margin-bottom: 10px;
+  }
+  .example-card h4 { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  .example-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; }
+
+  /* ─── MISCONCEPTION ─── */
+  .misconception-box {
+    background: var(--error-bg); border: 1px solid var(--error-border);
+    border-radius: var(--radius-md); padding: 24px; margin: 24px 0;
+  }
+  .misconception-box .mis-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--error); margin-bottom: 8px;
+  }
+  .misconception-box .mis-quote {
+    font-style: italic; font-size: 16px; color: var(--text); margin-bottom: 16px;
+    padding-left: 16px; border-left: 3px solid var(--error-border);
+  }
+  .misconception-box .mis-why, .misconception-box .mis-correct {
+    font-size: 14px; line-height: 1.65; margin-bottom: 10px;
+  }
+  .misconception-box .mis-why strong { color: var(--error); }
+  .misconception-box .mis-correct strong { color: var(--success); }
+
+  /* ─── CHECKPOINT ─── */
+  .checkpoint {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 24px; margin: 24px 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .checkpoint h4 {
+    font-size: 16px; font-weight: 700; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .checkpoint ol {
+    margin-left: 20px; counter-reset: q;
+  }
+  .checkpoint li {
+    margin-bottom: 12px; font-size: 15px; line-height: 1.6;
+    padding-left: 4px;
+  }
+
+  /* ─── RECAP ─── */
+  .recap-grid {
+    display: grid; gap: 16px; margin: 24px 0;
+  }
+  .recap-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 24px;
+    display: flex; gap: 14px; align-items: flex-start;
+    box-shadow: var(--shadow-sm);
+  }
+  .recap-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 18px;
+  }
+  .recap-item:nth-child(1) .recap-icon { background: var(--accent-light); color: var(--accent); }
+  .recap-item:nth-child(2) .recap-icon { background: var(--predict-bg); color: var(--predict); }
+  .recap-item:nth-child(3) .recap-icon { background: var(--explain-bg); color: var(--explain); }
+  .recap-item:nth-child(4) .recap-icon { background: var(--test-bg); color: var(--test); }
+  .recap-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .recap-item p { font-size: 14px; color: var(--text-secondary); line-height: 1.55; margin: 0; }
+
+  /* ─── FLASHCARDS ─── */
+  .flashcards-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px; margin: 24px 0;
+  }
+  .flashcard {
+    perspective: 800px; height: 200px; cursor: pointer;
+  }
+  .flashcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-md); }
+  .flashcard-inner {
+    width: 100%; height: 100%; position: relative;
+    transition: transform .45s cubic-bezier(.4,.2,.2,1);
+    transform-style: preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-face {
+    position: absolute; inset: 0; border-radius: var(--radius-md);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px; text-align: center;
+  }
+  .flashcard-front {
+    background: var(--flashcard-front); color: #fff;
+    box-shadow: var(--shadow-md);
+  }
+  .flashcard-back {
+    background: var(--flashcard-back); color: #fff;
+    transform: rotateY(180deg);
+    box-shadow: var(--shadow-md);
+  }
+  .flashcard-face .card-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; opacity: .7; margin-bottom: 10px;
+  }
+  .flashcard-face .card-text {
+    font-size: 15px; font-weight: 500; line-height: 1.5;
+  }
+  .flashcard-face .tap-hint {
+    position: absolute; bottom: 12px; font-size: 11px;
+    opacity: .6;
+  }
+
+  /* ─── QUIZ ─── */
+  .quiz-question {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 24px; margin: 20px 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .quiz-question h4 {
+    font-size: 15px; font-weight: 600; margin-bottom: 14px;
+    display: flex; gap: 8px;
+  }
+  .quiz-question h4 .q-num {
+    color: var(--accent); font-weight: 700;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-option {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 16px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border); cursor: pointer;
+    transition: all var(--transition); font-size: 15px; line-height: 1.5;
+    background: var(--surface);
+  }
+  .quiz-option:hover { border-color: var(--accent); background: var(--accent-light); }
+  .quiz-option.selected { border-color: var(--accent); background: var(--accent-light); }
+  .quiz-option.correct { border-color: var(--success); background: var(--success-bg); }
+  .quiz-option.incorrect { border-color: var(--error); background: var(--error-bg); }
+  .quiz-option .opt-letter {
+    font-weight: 700; color: var(--accent); min-width: 18px;
+    font-size: 14px; flex-shrink: 0; margin-top: 1px;
+  }
+  .quiz-option.correct .opt-letter { color: var(--success); }
+  .quiz-option.incorrect .opt-letter { color: var(--error); }
+  .quiz-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .quiz-btn {
+    padding: 10px 20px; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text); transition: all var(--transition);
+  }
+  .quiz-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .quiz-btn.check { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .quiz-btn.check:hover { background: var(--accent-hover); }
+  .quiz-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .quiz-feedback {
+    margin-top: 14px; padding: 14px 18px; border-radius: var(--radius-sm);
+    font-size: 14px; line-height: 1.6; display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--text); }
+  .quiz-feedback.incorrect-fb { background: var(--error-bg); border: 1px solid var(--error-border); color: var(--text); }
+
+  /* ─── REVISION PLAN ─── */
+  .revision-timeline { margin: 24px 0; }
+  .revision-day {
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    margin-bottom: 10px; overflow: hidden;
+    background: var(--surface);
+  }
+  .revision-day-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; cursor: pointer; user-select: none;
+    transition: background var(--transition);
+  }
+  .revision-day-header:hover { background: var(--surface-hover); }
+  .revision-day-header .day-badge {
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    background: var(--accent-light); padding: 4px 10px;
+    border-radius: 6px; white-space: nowrap;
+  }
+  .revision-day-header .day-title {
+    font-size: 14px; font-weight: 600; flex: 1;
+  }
+  .revision-day-header .day-chevron {
+    color: var(--text-tertiary); transition: transform .2s ease;
+    flex-shrink: 0;
+  }
+  .revision-day.open .day-chevron { transform: rotate(180deg); }
+  .revision-day-body {
+    max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  }
+  .revision-day.open .revision-day-body { max-height: 200px; }
+  .revision-day-content {
+    padding: 0 20px 16px; font-size: 14px; color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    text-align: center; padding: 48px 20px 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  .footer p { font-size: 13px; color: var(--text-tertiary); line-height: 1.6; }
+  .footer .footer-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg-alt); padding: 6px 14px; border-radius: 20px;
+    font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;
+    border: 1px solid var(--border);
+  }
+
+  /* ─── UTILITIES ─── */
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 640px) {
+    .hero { min-height: 85vh; }
+    .hero h1 { font-size: 1.9rem; }
+    .flashcards-grid { grid-template-columns: 1fr; }
+    .section-nav a { padding: 10px 10px; font-size: 12px; }
+    .nav-label { display: none; }
+    .nav-progress-bar { width: 60px; }
+    .chapter-section { padding: 40px 0 32px; }
+    .force-diagram { padding: 16px; }
+    .recap-item { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <div class="nav-title"><span>Newton's Third Law</span></div>
+    <div class="nav-label">Mini Book</div>
+    <div class="nav-spacer"></div>
+    <div class="nav-progress" aria-label="Reading progress">
+      <span id="progress-label">0%</span>
+      <div class="nav-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="nav-progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+    <button class="nav-section-btn" id="sectionDropdown" aria-haspopup="true" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      Sections
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<header class="hero" id="hero">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-particles" aria-hidden="true" id="particles"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      High School Physics &middot; Guided Inquiry
+    </div>
+    <h1>Newton's <em>Third Law</em> of Motion</h1>
+    <p class="hero-subtitle">Predict &rarr; Test &rarr; Explain</p>
+    <p class="hero-meta">
+      <span>Mini Book</span>
+      <span>&middot;</span>
+      <span>10 Sections</span>
+      <span>&middot;</span>
+      <span>Interactive</span>
+    </p>
+
+    <!-- Force pair diagram -->
+    <div class="hero-diagram" aria-label="Two skaters pushing each other with equal and opposite forces">
+      <svg viewBox="0 0 360 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Skater A -->
+        <circle cx="80" cy="60" r="28" fill="#3b82f6" opacity=".15" stroke="#3b82f6" stroke-width="2"/>
+        <circle cx="80" cy="48" r="8" fill="#3b82f6"/>
+        <line x1="80" y1="56" x2="80" y2="78" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="80" y1="62" x2="66" y2="72" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="80" y1="62" x2="94" y2="72" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="80" y1="78" x2="70" y2="95" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="80" y1="78" x2="90" y2="95" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="80" y="112" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="600" font-family="var(--font-sans)">A (You)</text>
+
+        <!-- Skater B -->
+        <circle cx="280" cy="60" r="28" fill="#7c3aed" opacity=".15" stroke="#7c3aed" stroke-width="2"/>
+        <circle cx="280" cy="48" r="8" fill="#7c3aed"/>
+        <line x1="280" y1="56" x2="280" y2="78" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="280" y1="62" x2="266" y2="72" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="280" y1="62" x2="294" y2="72" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="280" y1="78" x2="270" y2="95" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="280" y1="78" x2="290" y2="95" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="280" y="112" text-anchor="middle" fill="#7c3aed" font-size="11" font-weight="600" font-family="var(--font-sans)">B (Friend)</text>
+
+        <!-- Force arrows -->
+        <!-- A pushes B (rightward) -->
+        <line x1="112" y1="42" x2="248" y2="42" stroke="#3b82f6" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+        <text x="180" y="35" text-anchor="middle" fill="#3b82f6" font-size="10" font-weight="600" font-family="var(--font-sans)">F(A on B)</text>
+
+        <!-- B pushes A (leftward) -->
+        <line x1="248" y1="78" x2="112" y2="78" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrowPurple)"/>
+        <text x="180" y="93" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="600" font-family="var(--font-sans)">F(B on A)</text>
+
+        <defs>
+          <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+          </marker>
+          <marker id="arrowPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <button class="hero-start" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">
+      Start Reading
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ SECTION NAV ═══ -->
+<div class="section-nav" id="sectionNav" role="navigation" aria-label="Chapter sections">
+  <div class="section-nav-inner">
+    <a href="#s1" data-section="s1"><span class="num">1</span> Mystery</a>
+    <a href="#s2" data-section="s2"><span class="num">2</span> Test</a>
+    <a href="#s3" data-section="s3"><span class="num">3</span> The Law</a>
+    <a href="#s4" data-section="s4"><span class="num">4</span> Misconception</a>
+    <a href="#s5" data-section="s5"><span class="num">5</span> Bug vs Truck</a>
+    <a href="#s6" data-section="s6"><span class="num">6</span> Checkpoint</a>
+    <a href="#s7" data-section="s7"><span class="num">7</span> Recap</a>
+    <a href="#s8" data-section="s8"><span class="num">8</span> Flashcards</a>
+    <a href="#s9" data-section="s9"><span class="num">9</span> Quiz</a>
+    <a href="#s10" data-section="s10"><span class="num">10</span> 7-Day Plan</a>
+  </div>
+</div>
+
+<!-- ═══ CHAPTER CONTENT ═══ -->
+<main class="main">
+
+  <!-- ─── Section 1: The Skateboard Mystery ─── -->
+  <section class="chapter-section" id="s1">
+      <div class="section-header">
+      <div class="section-num">1</div>
+      <div>
+        <h2>The Skateboard Mystery: Make a Prediction</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <p>Imagine you are standing on a skateboard on completely flat, smooth pavement. Next to you is your friend, also standing on a skateboard. Neither of you is touching the ground with your feet.</p>
+      <p>You reach out your hands and give your friend a firm push forward.</p>
+
+      <div class="callout callout-predict">
+        <div class="callout-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a9 9 0 0 1 9 9c0 3.5-2 6.5-5 8l-1 3H9l-1-3c-3-1.5-5-4.5-5-8a9 9 0 0 1 9-9z"/><path d="M9.5 21h5"/></svg>
+          Predict
+        </div>
+        <p><strong>Stop &amp; Predict:</strong> What will happen to you? What will happen to your friend?</p>
+        <ul>
+          <li><strong>A)</strong> Only your friend rolls forward; you stay completely still because you did the pushing.</li>
+          <li><strong>B)</strong> Your friend rolls forward, and you roll backward.</li>
+          <li><strong>C)</strong> Both of you roll forward in the direction you pushed.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 2: Testing the Prediction ─── -->
+  <section class="chapter-section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div>
+        <h2>Testing the Prediction: What Actually Happens?</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <div class="callout callout-test">
+        <div class="callout-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Test
+        </div>
+        <p>If you try this experiment on skateboards, roller skates, or ice skates, you will observe something unmistakable: <strong>Both skaters move.</strong></p>
+      </div>
+
+      <p>Even though <em>you</em> exerted the effort and pushed forward on your friend, you are propelled backward simultaneously.</p>
+
+      <div class="callout callout-explain">
+        <div class="callout-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Explain
+        </div>
+        <p><strong>Why?</strong> You cannot push on something without it pushing back on you. In physics, a force isn't an object that someone possesses; <strong>a force is an interaction between two objects</strong>.</p>
+        <p>When Object A applies a force to Object B, Object B automatically and simultaneously applies an equal force back on Object A in the opposite direction.</p>
+      </div>
+
+      <div class="force-diagram">
+        <div class="diagram-title">The Skater Interaction Pair</div>
+        <svg viewBox="0 0 440 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Skater A -->
+          <rect x="40" y="30" width="100" height="80" rx="12" fill="#3b82f6" opacity=".08" stroke="#3b82f6" stroke-width="1.5"/>
+          <text x="90" y="60" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600" font-family="var(--font-sans)">Skater A</text>
+          <text x="90" y="78" text-anchor="middle" fill="#3b82f6" font-size="11" font-family="var(--font-sans)">(You)</text>
+
+          <!-- Skater B -->
+          <rect x="300" y="30" width="100" height="80" rx="12" fill="#7c3aed" opacity=".08" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="350" y="60" text-anchor="middle" fill="#7c3aed" font-size="12" font-weight="600" font-family="var(--font-sans)">Skater B</text>
+          <text x="350" y="78" text-anchor="middle" fill="#7c3aed" font-size="11" font-family="var(--font-sans)">(Friend)</text>
+
+          <!-- Arrow: A pushes B (right) -->
+          <line x1="148" y1="52" x2="292" y2="52" stroke="#3b82f6" stroke-width="2.5" marker-end="url(#arrB)"/>
+          <text x="220" y="44" text-anchor="middle" fill="#3b82f6" font-size="10" font-weight="600" font-family="var(--font-sans)">F(A on B) — Pushes friend Right</text>
+
+          <!-- Arrow: B pushes A (left) -->
+          <line x1="292" y1="88" x2="148" y2="88" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrP)"/>
+          <text x="220" y="106" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="600" font-family="var(--font-sans)">F(B on A) — Pushes you Left</text>
+
+          <defs>
+            <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/></marker>
+            <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/></marker>
+          </defs>
+        </svg>
+        <p class="diagram-caption">Notice: Each arrow starts on one skater and points to the other. The two forces act on <strong>two different people</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 3: Formalizing the Law ─── -->
+  <section class="chapter-section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div>
+        <h2>Formalizing the Law: Newton's Third Law</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <p>Sir Isaac Newton formulated this discovery as his <strong>Third Law of Motion</strong>:</p>
+
+      <div class="math-block">
+        <div class="formula"><span class="vec">F</span><sub>A on B</sub> = &minus;<span class="vec">F</span><sub>B on A</sub></div>
+        <dl class="math-annotation">
+          <dt><span class="vec">F</span><sub>A on B</sub></dt>
+          <dd>"The force that <strong>Object A exerts on Object B</strong>."</dd>
+          <dt><span class="vec">F</span><sub>B on A</sub></dt>
+          <dd>"The force that <strong>Object B exerts on Object A</strong>."</dd>
+          <dt>Minus sign (&minus;)</dt>
+          <dd>The two forces point in <strong>exact opposite directions</strong>.</dd>
+          <dt>Equals sign (=)</dt>
+          <dd>Both forces have the <strong>exact same strength (magnitude)</strong>.</dd>
+        </dl>
+      </div>
+
+      <div class="callout callout-important">
+        <div class="callout-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Important
+        </div>
+        <p><strong>Action and Reaction are Simultaneous!</strong> While everyday language says "For every action, there is an equal and opposite reaction," do not think of this like a cause and a delayed effect. <strong>"Action" and "reaction" happen at the exact same instant as parts of a single mutual interaction.</strong> Neither force exists before or after the other.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 4: The Big Misconception ─── -->
+  <section class="chapter-section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div>
+        <h2>The Big Misconception: Why Don't They Cancel Out?</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <p>A very common question is:</p>
+
+      <div class="misconception-box">
+        <div class="mis-label">Misconception</div>
+        <div class="mis-quote">"If every force has an equal and opposite force, why does anything ever move? Shouldn't the forces add up to zero and cancel each other out?"</div>
+
+        <div class="mis-why"><strong>Why it's wrong:</strong> Forces only cancel out when they act on the <strong>same object</strong>.</div>
+
+        <p style="font-size:14px; line-height:1.65; margin-bottom:8px;"><strong>Example of cancellation (Newton's 1st/2nd Law):</strong> Two people push a heavy box from opposite sides with 50 N each. Both forces are applied to the <strong>box</strong>. &Sigma;F = 50 N &minus; 50 N = 0 N. The box does not accelerate.</p>
+
+        <div class="mis-correct"><strong>Correct idea:</strong> Newton's Third Law Pair: Force 1 is Skater 1 pushing <strong>on Skater 2</strong>. Force 2 is Skater 2 pushing <strong>on Skater 1</strong>. Because Force 1 is felt by Skater 2, and Force 2 is felt by Skater 1, each individual skater experiences an unbalanced net force and accelerates!</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 5: Bug vs Windshield ─── -->
+  <section class="chapter-section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div>
+        <h2>The Bug vs. The Windshield: Equal Forces, Unequal Effects</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <div class="callout callout-predict">
+        <div class="callout-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a9 9 0 0 1 9 9c0 3.5-2 6.5-5 8l-1 3H9l-1-3c-3-1.5-5-4.5-5-8a9 9 0 0 1 9-9z"/><path d="M9.5 21h5"/></svg>
+          Predict
+        </div>
+        <p>A highway truck traveling at 65 mph collides with a tiny mosquito hovering in the air. <strong>Which experiences a greater force during the collision: the truck or the mosquito?</strong></p>
+      </div>
+
+      <div class="callout callout-explain">
+        <div class="callout-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Explain
+        </div>
+        <p>According to Newton's Third Law, <strong>the force exerted by the truck on the mosquito is EXACTLY EQUAL to the force exerted by the mosquito on the truck.</strong></p>
+      </div>
+
+      <div class="force-diagram">
+        <div class="diagram-title">Collision Force Pair</div>
+        <svg viewBox="0 0 440 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Truck -->
+          <rect x="40" y="30" width="110" height="80" rx="12" fill="#ea580c" opacity=".08" stroke="#ea580c" stroke-width="1.5"/>
+          <text x="95" y="60" text-anchor="middle" fill="#ea580c" font-size="12" font-weight="600" font-family="var(--font-sans)">Big Truck</text>
+          <text x="95" y="78" text-anchor="middle" fill="#ea580c" font-size="11" font-family="var(--font-sans)">65 mph</text>
+
+          <!-- Mosquito -->
+          <rect x="310" y="30" width="110" height="80" rx="12" fill="#16a34a" opacity=".08" stroke="#16a34a" stroke-width="1.5"/>
+          <text x="365" y="60" text-anchor="middle" fill="#16a34a" font-size="12" font-weight="600" font-family="var(--font-sans)">Tiny Mosquito</text>
+          <text x="365" y="78" text-anchor="middle" fill="#16a34a" font-size="11" font-family="var(--font-sans)">Hovering</text>
+
+          <!-- Arrow: Truck on Mosquito (right) -->
+          <line x1="158" y1="52" x2="302" y2="52" stroke="#ea580c" stroke-width="2.5" marker-end="url(#arrO)"/>
+          <text x="230" y="44" text-anchor="middle" fill="#ea580c" font-size="10" font-weight="600" font-family="var(--font-sans)">F(Truck on Mosquito) — Equal Magnitude</text>
+
+          <!-- Arrow: Mosquito on Truck (left) -->
+          <line x1="302" y1="88" x2="158" y2="88" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arrG)"/>
+          <text x="230" y="106" text-anchor="middle" fill="#16a34a" font-size="10" font-weight="600" font-family="var(--font-sans)">F(Mosquito on Truck) — Equal Magnitude</text>
+
+          <defs>
+            <marker id="arrO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ea580c"/></marker>
+            <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker>
+          </defs>
+        </svg>
+      </div>
+
+      <p>Why does the mosquito suffer catastrophic damage while the truck barely registers a bump? Recall <strong>Newton's Second Law</strong> (a = F/m):</p>
+
+      <div class="example-card">
+        <div class="example-label">Mass &amp; Acceleration</div>
+        <h4>Same Force, Different Results</h4>
+        <div class="math-block" style="margin:12px 0 0;">
+          <dl class="math-annotation">
+            <dt>For the mosquito (tiny mass m)</dt>
+            <dd>a<sub>mosquito</sub> = F / tiny m &rarr; <strong style="color:var(--error)">Enormous acceleration (fatal)</strong></dd>
+            <dt>For the truck (huge mass M)</dt>
+            <dd>a<sub>truck</sub> = F / huge M &rarr; <strong style="color:var(--success)">Negligible acceleration</strong></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 6: Conceptual Checkpoint ─── -->
+  <section class="chapter-section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div>
+        <h2>Conceptual Checkpoint</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <div class="checkpoint">
+        <h4>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Think About It
+        </h4>
+        <ol>
+          <li>When you walk across the floor, what force actually pushes you forward?</li>
+          <li>A rocket in the vacuum of deep space fires its thrusters. How can it accelerate if there is no air to push against?</li>
+          <li>Draw or describe an interaction diagram showing the Earth pulling down on an apple, and identify the reaction force.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 7: Chapter Recap ─── -->
+  <section class="chapter-section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div>
+        <h2>Chapter Recap</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <div class="recap-grid">
+        <div class="recap-item">
+          <div class="recap-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+          </div>
+          <div>
+            <h4>Forces are Interactions</h4>
+            <p>A force never exists alone; it is always a mutual push or pull between two distinct objects.</p>
+          </div>
+        </div>
+        <div class="recap-item">
+          <div class="recap-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M2 12h20"/></svg>
+          </div>
+          <div>
+            <h4>Newton's Third Law</h4>
+            <p>Whenever Object A exerts a force on Object B, Object B simultaneously exerts an equal-sized force on Object A in the opposite direction (F<sub>A on B</sub> = &minus;F<sub>B on A</sub>).</p>
+          </div>
+        </div>
+        <div class="recap-item">
+          <div class="recap-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </div>
+          <div>
+            <h4>Why They Don't Cancel</h4>
+            <p>Action-reaction pairs act on <strong>different objects</strong>, meaning each individual object feels a net force that can cause it to accelerate.</p>
+          </div>
+        </div>
+        <div class="recap-item">
+          <div class="recap-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div>
+            <h4>Forces vs. Accelerations</h4>
+            <p>Equal forces do not mean equal results. By Newton's Second Law (a = F/m), an object with tiny mass experiences a huge acceleration, while an object with huge mass experiences very little acceleration from the same force.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 8: Flashcards ─── -->
+  <section class="chapter-section" id="s8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div>
+        <h2>Flashcards: Key Concepts</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <p style="margin-bottom:20px;">Click or tap a card to reveal the answer. Use keyboard Space or Enter to flip.</p>
+      <div class="flashcards-grid" role="list">
+
+        <div class="flashcard" role="listitem" tabindex="0" aria-label="Flashcard 1: What is an Interaction Pair?" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();this.classList.toggle('flipped')}">
+          <div class="flashcard-inner">
+            <div class="flashcard-face flashcard-front">
+              <div class="card-label">Card 1</div>
+              <div class="card-text">What is an Interaction Pair?</div>
+              <div class="tap-hint">Tap to reveal</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <div class="card-label">Answer</div>
+              <div class="card-text">Two forces of equal magnitude and opposite direction that two objects exert on each other simultaneously.</div>
+              <div class="tap-hint">Tap to flip back</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard" role="listitem" tabindex="0" aria-label="Flashcard 2: What does the formula mean?" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();this.classList.toggle('flipped')}">
+          <div class="flashcard-inner">
+            <div class="flashcard-face flashcard-front">
+              <div class="card-label">Card 2</div>
+              <div class="card-text">What does F<sub>A on B</sub> = &minus;F<sub>B on A</sub> mean?</div>
+              <div class="tap-hint">Tap to reveal</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <div class="card-label">Answer</div>
+              <div class="card-text">Object A pushes Object B with the exact same strength that Object B pushes Object A, but in the opposite direction.</div>
+              <div class="tap-hint">Tap to flip back</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard" role="listitem" tabindex="0" aria-label="Flashcard 3: Why don't they cancel out?" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();this.classList.toggle('flipped')}">
+          <div class="flashcard-inner">
+            <div class="flashcard-face flashcard-front">
+              <div class="card-label">Card 3</div>
+              <div class="card-text">Why don't action-reaction pairs cancel out?</div>
+              <div class="tap-hint">Tap to reveal</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <div class="card-label">Answer</div>
+              <div class="card-text">Because the two forces act on <em>different</em> objects, not on the same object.</div>
+              <div class="tap-hint">Tap to flip back</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard" role="listitem" tabindex="0" aria-label="Flashcard 4: Are action and reaction sequential?" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();this.classList.toggle('flipped')}">
+          <div class="flashcard-inner">
+            <div class="flashcard-face flashcard-front">
+              <div class="card-label">Card 4</div>
+              <div class="card-text">Are action and reaction forces sequential?</div>
+              <div class="tap-hint">Tap to reveal</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <div class="card-label">Answer</div>
+              <div class="card-text">No. They happen at the exact same instant; neither is a delay or reaction to the other.</div>
+              <div class="tap-hint">Tap to flip back</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flashcard" role="listitem" tabindex="0" aria-label="Flashcard 5: Truck hits bug - which feels more force?" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();this.classList.toggle('flipped')}">
+          <div class="flashcard-inner">
+            <div class="flashcard-face flashcard-front">
+              <div class="card-label">Card 5</div>
+              <div class="card-text">If a truck hits a bug, which feels more force?</div>
+              <div class="tap-hint">Tap to reveal</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <div class="card-label">Answer</div>
+              <div class="card-text">Both experience the exact same force magnitude. The bug accelerates much more because its mass is tiny (a = F/m).</div>
+              <div class="tap-hint">Tap to flip back</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 9: Quick Quiz ─── -->
+  <section class="chapter-section" id="s9">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <div>
+        <h2>Quick Quiz</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <p style="margin-bottom:20px;">Select your answer, then click <strong>Check Answer</strong> to see if you're correct.</p>
+
+      <!-- Q1 -->
+      <div class="quiz-question" data-correct="B" data-explain="To propel your body forward, your feet must exert a backward force on the canoe. By Newton's Third Law, the canoe exerts an equal forward force on you, while receiving an equal backward force that pushes it away.">
+        <h4><span class="q-num">Q1.</span> When you jump off a small canoe onto a dock, why does the canoe move backward into the water?</h4>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="A" onclick="selectOption(this)">
+            <span class="opt-letter">A)</span>
+            <span>The water pushes the canoe backward as you jump.</span>
+          </label>
+          <label class="quiz-option" data-value="B" onclick="selectOption(this)">
+            <span class="opt-letter">B)</span>
+            <span>You push backward on the canoe to propel yourself forward toward the dock.</span>
+          </label>
+          <label class="quiz-option" data-value="C" onclick="selectOption(this)">
+            <span class="opt-letter">C)</span>
+            <span>Air resistance created by your jump pushes the canoe away.</span>
+          </label>
+          <label class="quiz-option" data-value="D" onclick="selectOption(this)">
+            <span class="opt-letter">D)</span>
+            <span>The canoe moves backward only after you have landed on the dock.</span>
+          </label>
+        </div>
+        <div class="quiz-actions">
+          <button class="quiz-btn check" onclick="checkAnswer(this)" disabled>Check Answer</button>
+          <button class="quiz-btn" onclick="resetQuestion(this)">Reset</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question" data-correct="B" data-explain="Gravity is a mutual interaction pair. The Earth pulls down on the apple with force F, and the apple pulls up on the Earth with the exact same force F. The Earth barely moves because its mass is immense (a = F/M_Earth ≈ 0).">
+        <h4><span class="q-num">Q2.</span> An apple falls from a tree toward the Earth. Which statement correctly describes the gravitational forces involved?</h4>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="A" onclick="selectOption(this)">
+            <span class="opt-letter">A)</span>
+            <span>Only the Earth exerts a gravitational force on the apple.</span>
+          </label>
+          <label class="quiz-option" data-value="B" onclick="selectOption(this)">
+            <span class="opt-letter">B)</span>
+            <span>The Earth pulls down on the apple with a force equal to the apple's upward pull on the Earth.</span>
+          </label>
+          <label class="quiz-option" data-value="C" onclick="selectOption(this)">
+            <span class="opt-letter">C)</span>
+            <span>The Earth's pull is much stronger because the Earth has much more mass.</span>
+          </label>
+          <label class="quiz-option" data-value="D" onclick="selectOption(this)">
+            <span class="opt-letter">D)</span>
+            <span>The apple starts pulling on the Earth only when it hits the ground.</span>
+          </label>
+        </div>
+        <div class="quiz-actions">
+          <button class="quiz-btn check" onclick="checkAnswer(this)" disabled>Check Answer</button>
+          <button class="quiz-btn" onclick="resetQuestion(this)">Reset</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question" data-correct="C" data-explain="Forces between two interacting bodies are always equal in magnitude and opposite in direction. You cannot push without being pushed back with the exact same force (40 N).">
+        <h4><span class="q-num">Q3.</span> Two ice skaters of equal mass push against each other's hands. Skater 1 pushes with 40 N of force. What force does Skater 2 exert on Skater 1?</h4>
+        <div class="quiz-options">
+          <label class="quiz-option" data-value="A" onclick="selectOption(this)">
+            <span class="opt-letter">A)</span>
+            <span>0 N, because only Skater 1 pushed.</span>
+          </label>
+          <label class="quiz-option" data-value="B" onclick="selectOption(this)">
+            <span class="opt-letter">B)</span>
+            <span>20 N in the opposite direction.</span>
+          </label>
+          <label class="quiz-option" data-value="C" onclick="selectOption(this)">
+            <span class="opt-letter">C)</span>
+            <span>40 N in the opposite direction.</span>
+          </label>
+          <label class="quiz-option" data-value="D" onclick="selectOption(this)">
+            <span class="opt-letter">D)</span>
+            <span>80 N in the same direction.</span>
+          </label>
+        </div>
+        <div class="quiz-actions">
+          <button class="quiz-btn check" onclick="checkAnswer(this)" disabled>Check Answer</button>
+          <button class="quiz-btn" onclick="resetQuestion(this)">Reset</button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section 10: 7-Day Revision Plan ─── -->
+  <section class="chapter-section" id="s10">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div>
+        <h2>7-Day High School Revision Plan</h2>
+      </div>
+    </div>
+    <div class="chapter-text">
+      <p style="margin-bottom:20px;">Click each day to expand the study activity.</p>
+      <div class="revision-timeline">
+
+        <div class="revision-day">
+          <div class="revision-day-header" onclick="toggleDay(this.parentElement)" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDay(this.parentElement)}">
+            <span class="day-badge">Day 1</span>
+            <span class="day-title">Core Concept &amp; Prediction</span>
+            <svg class="day-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="revision-day-body">
+            <div class="revision-day-content">Read Sections 1 &amp; 2. Try the skater thought experiment and explain why you can't push something without it pushing back.</div>
+          </div>
+        </div>
+
+        <div class="revision-day">
+          <div class="revision-day-header" onclick="toggleDay(this.parentElement)" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDay(this.parentElement)}">
+            <span class="day-badge">Day 2</span>
+            <span class="day-title">Law &amp; Notation</span>
+            <svg class="day-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="revision-day-body">
+            <div class="revision-day-content">Read Section 3. Practice writing F<sub>A on B</sub> = &minus;F<sub>B on A</sub> and verbally state what each part of the formula represents.</div>
+          </div>
+        </div>
+
+        <div class="revision-day">
+          <div class="revision-day-header" onclick="toggleDay(this.parentElement)" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDay(this.parentElement)}">
+            <span class="day-badge">Day 3</span>
+            <span class="day-title">Misconception Busting</span>
+            <svg class="day-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="revision-day-body">
+            <div class="revision-day-content">Read Section 4. Explain aloud to yourself or a peer why action-reaction forces do not cancel out to zero.</div>
+          </div>
+        </div>
+
+        <div class="revision-day">
+          <div class="revision-day-header" onclick="toggleDay(this.parentElement)" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDay(this.parentElement)}">
+            <span class="day-badge">Day 4</span>
+            <span class="day-title">Mass &amp; Acceleration Connection</span>
+            <svg class="day-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="revision-day-body">
+            <div class="revision-day-content">Read Section 5. Re-solve the Truck vs. Mosquito scenario using a = F/m to distinguish force from acceleration.</div>
+          </div>
+        </div>
+
+        <div class="revision-day">
+          <div class="revision-day-header" onclick="toggleDay(this.parentElement)" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDay(this.parentElement)}">
+            <span class="day-badge">Day 5</span>
+            <span class="day-title">Flashcard Drill</span>
+            <svg class="day-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="revision-day-body">
+            <div class="revision-day-content">Test yourself on all 5 flashcards in Section 8 until you can explain each answer without looking at the back.</div>
+          </div>
+        </div>
+
+        <div class="revision-day">
+          <div class="revision-day-header" onclick="toggleDay(this.parentElement)" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDay(this.parentElement)}">
+            <span class="day-badge">Day 6</span>
+            <span class="day-title">Practice Quiz &amp; Checkpoints</span>
+            <svg class="day-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="revision-day-body">
+            <div class="revision-day-content">Answer the 3 Conceptual Checkpoints (Section 6) and the 3 Quick Quiz questions (Section 9) without looking at the answer keys. Check your answers afterward.</div>
+          </div>
+        </div>
+
+        <div class="revision-day">
+          <div class="revision-day-header" onclick="toggleDay(this.parentElement)" role="button" tabindex="0" aria-expanded="false" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDay(this.parentElement)}">
+            <span class="day-badge">Day 7</span>
+            <span class="day-title">Full Recap &amp; Self-Explanation</span>
+            <svg class="day-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="revision-day-body">
+            <div class="revision-day-content">Review the Section 7 Chapter Recap. Summarize Newton's Third Law in 3 sentences to confirm complete mastery.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    Optional Enhancement &middot; Not a Required Assignment Deliverable
+  </div>
+  <p>Newton's Third Law of Motion &mdash; A Mini Textbook<br>
+  Content based on the completed Agent Factory Project 4 chapter.<br>
+  This interactive Mini Book is a self-added presentation layer.</p>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // ─── Particles ───
+  const particleContainer = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (100 + Math.random() * 20) + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.width = p.style.height = (2 + Math.random() * 2) + 'px';
+    particleContainer.appendChild(p);
+  }
+
+  // ─── Reading Progress ───
+  const progressFill = document.getElementById('progress-fill');
+  const progressLabel = document.getElementById('progress-label');
+  const sections = document.querySelectorAll('.chapter-section');
+  const navLinks = document.querySelectorAll('.section-nav a');
+
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100)));
+    progressFill.style.width = pct + '%';
+    progressLabel.textContent = pct + '%';
+    const bar = progressFill.parentElement;
+    bar.setAttribute('aria-valuenow', pct);
+  }
+
+  // ─── Active section tracking ───
+  function updateActiveSection() {
+    const scrollY = window.scrollY + 120;
+    let currentId = '';
+    sections.forEach(s => {
+      if (s.offsetTop <= scrollY) currentId = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('data-section') === currentId);
+    });
+  }
+
+  // ─── Section reveal ───
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.08 });
+  sections.forEach(s => observer.observe(s));
+
+  window.addEventListener('scroll', () => {
+    updateProgress();
+    updateActiveSection();
+  }, { passive: true });
+  updateProgress();
+  updateActiveSection();
+
+  // ─── Quiz Logic ───
+  window.selectOption = function(el) {
+    const q = el.closest('.quiz-question');
+    if (q.classList.contains('answered')) return;
+    q.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    q.querySelector('.quiz-btn.check').disabled = false;
+  };
+
+  window.checkAnswer = function(btn) {
+    const q = btn.closest('.quiz-question');
+    const correct = q.dataset.correct;
+    const explain = q.dataset.explain;
+    const selected = q.querySelector('.quiz-option.selected');
+    if (!selected) return;
+
+    q.classList.add('answered');
+    const isCorrect = selected.dataset.value === correct;
+
+    q.querySelectorAll('.quiz-option').forEach(o => {
+      if (o.dataset.value === correct) o.classList.add('correct');
+      else if (o === selected && !isCorrect) o.classList.add('incorrect');
+      o.style.cursor = 'default';
+    });
+
+    const fb = q.querySelector('.quiz-feedback');
+    fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct-fb' : 'incorrect-fb');
+    fb.innerHTML = (isCorrect
+      ? '<strong>Correct!</strong> '
+      : '<strong>Incorrect.</strong> The correct answer is <strong>' + correct + '</strong>. '
+    ) + explain;
+
+    btn.disabled = true;
+    btn.textContent = 'Checked';
+  };
+
+  window.resetQuestion = function(btn) {
+    const q = btn.closest('.quiz-question');
+    q.classList.remove('answered');
+    q.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('selected', 'correct', 'incorrect');
+      o.style.cursor = 'pointer';
+    });
+    const fb = q.querySelector('.quiz-feedback');
+    fb.className = 'quiz-feedback';
+    fb.innerHTML = '';
+    q.querySelector('.quiz-btn.check').disabled = true;
+    q.querySelector('.quiz-btn.check').textContent = 'Check Answer';
+  };
+
+  // ─── Revision Day Toggle ───
+  window.toggleDay = function(el) {
+    const wasOpen = el.classList.contains('open');
+    el.classList.toggle('open');
+    el.querySelector('.revision-day-header').setAttribute('aria-expanded', !wasOpen);
+  };
+
+  // ─── Section Dropdown (mobile-ish) ───
+  const dropdown = document.getElementById('sectionDropdown');
+  dropdown.addEventListener('click', () => {
+    const nav = document.getElementById('sectionNav');
+    nav.scrollIntoView({ behavior: 'smooth' });
+  });
+
+})();
+</script>
+</body>
+</html>
