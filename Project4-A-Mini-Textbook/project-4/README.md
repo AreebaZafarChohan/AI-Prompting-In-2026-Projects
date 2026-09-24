@@ -43,6 +43,21 @@ This project is a process-driven AI learning project focused on **directing, que
 
 ---
 
+## Optional Self-Added Enhancement: Interactive Mini Book
+
+After completing all required assignment deliverables, an interactive web-based **Mini Book UI** was independently added as an optional enhancement to make the completed chapter more polished, interactive, and presentable.
+
+**Key distinctions:**
+- The Agent Factory assignment required the mini textbook chapter (`chapter/draft.md`) and the process notebook (`process/process-notebook.md`).
+- The interactive Mini Book UI (`chapter/mini-book.html`) was **NOT** a required assignment option.
+- It was independently added as a self-directed enhancement after all assignment work was complete.
+- The UI is a **presentation layer** over the existing chapter — it displays the same educational content in an interactive web format.
+- No new educational content, physics claims, or unsupported facts were intentionally added beyond what exists in the verified chapter.
+- The UI respects the project's Predict → Test → Explain guided inquiry structure.
+- All original chapter sections, flashcards, quiz questions, and the 7-day revision plan are preserved faithfully.
+
+---
+
 ## Final Status
 **COMPLETE** — All requirements met, drafts improved, claims verified with genuine sources, and process documented.
 
@@ -64,7 +79,8 @@ project-4/
 │   ├── 05-revised-outlines.md         # 3 revised inquiry outlines
 │   └── 06-final-outline.md            # Final choice: Outline 2 (Guided Inquiry)
 ├── chapter/
-│   └── draft.md                       # Complete enhanced mini-textbook chapter
+│   ├── draft.md                       # Complete enhanced mini-textbook chapter
+│   └── mini-book.html                 # Optional: Interactive Mini Book UI
 ├── evaluation/
 │   ├── rubric.md                      # 4-metric pedagogical evaluation
 │   ├── improvements.md                # Record of chapter improvements & fact-check outcomes

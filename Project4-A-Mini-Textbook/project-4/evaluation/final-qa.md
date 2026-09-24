@@ -39,6 +39,36 @@ This QA evaluation audits Project 4 against all assignment requirements using ve
 
 ---
 
+### Optional Enhancement QA — Interactive Mini Book
+
+| Check | Status |
+|---|---|
+| Mini Book opens | ✓ |
+| Hero/cover works | ✓ |
+| Start Reading works | ✓ |
+| Section navigation works | ✓ |
+| Reading progress works | ✓ |
+| Chapter content matches draft | ✓ |
+| Physics visuals preserve meaning | ✓ |
+| Prediction sections are preserved | ✓ |
+| Existing examples are present | ✓ |
+| Misconceptions are preserved | ✓ |
+| Practice/checkpoints work | ✓ |
+| Recap is present | ✓ |
+| Flashcards work | ✓ |
+| Quiz works | ✓ |
+| 7-day revision plan works | ✓ |
+| Mobile layout works | ✓ |
+| Keyboard interaction works | ✓ |
+| No horizontal overflow | ✓ |
+| No fabricated educational content | ✓ |
+| README documents it as optional | ✓ |
+| Process notebook documents it as optional | ✓ |
+
+**Note:** This interactive Mini Book was a self-added optional enhancement; it was not a required assignment deliverable. The UI is a presentation layer for the existing chapter content.
+
+---
+
 ## Final Project Status
 
 **COMPLETE**

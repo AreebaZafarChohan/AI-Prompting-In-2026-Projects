@@ -137,3 +137,19 @@ The rubric showed me that an AI-generated chapter can look good while still miss
 ### 4. Key Takeaway
 
 My biggest lesson from this project is that AI should be treated as a tool that I direct, evaluate, question, and correct. Better results did not come only from asking AI to write the chapter. They came from improving the prompt, comparing different approaches, making my own decisions, evaluating the output, checking important claims, and applying focused corrections. Human judgment remained important throughout the process.
+
+---
+
+## Optional Self-Added Enhancement: Interactive Mini Book
+
+After completing all required assignment deliverables, an interactive web-based Mini Book UI (`chapter/mini-book.html`) was added as an optional, self-directed enhancement.
+
+**Why it was added:** To make the completed chapter feel more polished, interactive, and presentable — transforming a Markdown document into a self-contained digital reading experience with navigation, flashcards, an interactive quiz, and a visual revision timeline.
+
+**Key facts:**
+- This was **optional** and not part of the required Agent Factory assignment.
+- The assignment required the mini textbook chapter and process notebook only.
+- The Mini Book is a **presentation layer** — it displays the existing chapter content in a web UI.
+- No new unsupported educational content was intentionally added.
+- All original chapter content (sections, diagrams, flashcards, quiz, revision plan) is preserved faithfully.
+- The Predict → Test → Explain guided inquiry structure is maintained in the UI.
