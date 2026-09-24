@@ -13,7 +13,7 @@ Welcome to the comprehensive repository for the **AI Prompting in 2026** series 
 | **Project 1 (v3)** | **Snake Battle — Agentic Iterative Arena** | [Live Demo](https://ai-prompting-in-2026-projects-cgzu.vercel.app/) | HTML5 Canvas, AI Bot Opponents |
 | **Project 2** | **Whack-a-Mole — Cyberpunk Arcade (v3)** | [Live Demo](https://ai-prompting-in-2026-projects-y6nq.vercel.app/) | Vanilla JS, Procedural SVG, Web Audio API |
 | **Project 3** | **A Page That Is You — Personal Evidence Portfolio** | [Live Demo](https://ai-prompting-in-2026-projects-qi5z.vercel.app/) | Semantic HTML5, CSS Bento Grid, Vanilla JS |
-| **Project 4** | **A Mini-Textbook — Newton's Third Law of Motion** | [`Project4-A-Mini-Textbook/`](./Project4-A-Mini-Textbook/project-4/) | Guided Inquiry, Markdown, Process Documentation |
+| **Project 4** | **A Mini-Textbook — Newton's Third Law of Motion** | [Live Demo](https://ai-prompting-in-2026-projects-2sr4.vercel.app/) | Guided Inquiry, Markdown, Process Documentation |
 
 ---
 
@@ -57,6 +57,7 @@ Welcome to the comprehensive repository for the **AI Prompting in 2026** series 
 ### 📖 Project 4: A Mini-Textbook — Newton's Third Law of Motion
 - **Directory:** [`Project4-A-Mini-Textbook/`](./Project4-A-Mini-Textbook/)
 - **Documentation:** [`Project4-A-Mini-Textbook/project-4/README.md`](./Project4-A-Mini-Textbook/project-4/README.md)
+- **Live URL:** [https://ai-prompting-in-2026-projects-2sr4.vercel.app/](https://ai-prompting-in-2026-projects-2sr4.vercel.app/)
 - **Concept & Working:**
   - **Process-Driven AI Steering:** Documents directing, questioning, evaluating, and correcting AI from weak initial prompts to a complete high school physics chapter.
   - **Guided Inquiry Pedagogy:** Implements **Option C (Predict, Test, Explain)** and **Outline 2 (Guided Inquiry)** using thought experiments, ASCII visual interaction models, and misconception busting.
