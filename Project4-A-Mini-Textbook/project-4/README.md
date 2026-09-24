@@ -63,6 +63,11 @@ After completing all required assignment deliverables, an interactive web-based 
 
 ---
 
+## 🌐 Live Deployment
+**Interactive Mini Book:** [https://ai-prompting-in-2026-projects-2sr4.vercel.app/](https://ai-prompting-in-2026-projects-2sr4.vercel.app/)
+
+---
+
 ## Directory Layout
 ```
 project-4/
